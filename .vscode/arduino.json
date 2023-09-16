@@ -1,0 +1,8 @@
+{
+    "sketch": "AudioI2S_test/AudioI2S_test.ino",
+    "configuration": "JTAGAdapter=builtin,PSRAM=opi,FlashMode=qio,FlashSize=8M,LoopCore=1,EventsCore=1,USBMode=hwcdc,CDCOnBoot=default,MSCOnBoot=default,DFUOnBoot=default,UploadMode=default,PartitionScheme=default_8MB,CPUFreq=240,UploadSpeed=921600,DebugLevel=debug,EraseFlash=none",
+    "board": "esp32:esp32:XIAO_ESP32S3",
+    "port": "/dev/tty.usbmodem101",
+    "programmer": "esptool",
+    "output": "/tmp/build"
+}
