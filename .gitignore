@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# KiCad stuff
+fp-info-cache
+sym-lib-table
+fp-lib-table
+*.lck
+~*
+*-backups
+\#*

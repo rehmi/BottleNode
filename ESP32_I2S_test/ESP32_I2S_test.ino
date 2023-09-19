@@ -118,7 +118,7 @@ void loop()
 
 	for (int i = 0; i < BUFLEN; i++) {
 		// buf[i] = scale_output(0.1*buf[i] + next_sample()/4);
-		buf[i] = scale_output(buf[i]>>2);
+		buf[i] = scale_output(buf[i] / 1);
 	}
 
 	if (digitalRead(OUTPUT_ENABLE_PIN))
