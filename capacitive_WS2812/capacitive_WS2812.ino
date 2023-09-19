@@ -28,11 +28,11 @@ void setup()
   Serial.begin(115200);
   LED_chain.begin(LED_GPIO, 5);			// a chain of 5 LEDs on LED_GPIO
   LED_chain.brightness(16);				// set the initial brightness level
-  LED_chain.setPixel(0, L_RED, 0);		// set initial colors
-  LED_chain.setPixel(1, L_RED, 0);
-  LED_chain.setPixel(2, L_GREEN, 0);
-  LED_chain.setPixel(3, L_GREEN, 0);
-  LED_chain.setPixel(4, L_BLUE, 1);		// update (show) the chain
+  LED_chain.setPixel(0, 0x80c0c0, 0);		// set initial colors
+  LED_chain.setPixel(1, 0x80c0ff, 0);
+  LED_chain.setPixel(2, 0x40c0ff, 0);
+  LED_chain.setPixel(3, 0x00c0ff, 0);
+  LED_chain.setPixel(4, 0x0080ff, 1);		// update (show) the chain
   
   const int n_samples = 1000;
   int touch_sum = 0;
@@ -49,7 +49,7 @@ void loop()
   int raw_touch = touchRead(TOUCH_PIN);
   baseline = alpha * baseline + (1-alpha) * raw_touch + 0.5;
   int touch = max(0, raw_touch-baseline);
-  uint8_t brightness = min(touch / 8, 255);
+  uint8_t brightness = min(touch / 1, 255);
 
   LED_chain.brightness(brightness, 1);
   delay(6);

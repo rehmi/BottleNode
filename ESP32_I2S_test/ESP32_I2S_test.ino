@@ -47,20 +47,20 @@ static const i2s_pin_config_t i2s_mic_pins = {
 	.data_in_num = 3
 };
 
-#define POWER_PIN ((gpio_num_t)10)
-#define OUTPUT_ENABLE_PIN ((gpio_num_t)7)
+#define SPKR_POWER ((gpio_num_t)9)
+// #define OUTPUT_ENABLE_PIN ((gpio_num_t)7)
 
 void setup() {
 	Serial.begin(115200);
 
-	pinMode(OUTPUT_ENABLE_PIN, INPUT_PULLUP);
-	digitalWrite(POWER_PIN, 0);
-	gpio_set_drive_capability(POWER_PIN, GPIO_DRIVE_CAP_3);
-	pinMode(POWER_PIN, OUTPUT);
+	// pinMode(OUTPUT_ENABLE_PIN, INPUT_PULLUP);
+	digitalWrite(SPKR_POWER, 0);
+	gpio_set_drive_capability(SPKR_POWER, GPIO_DRIVE_CAP_3);
+	pinMode(SPKR_POWER, OUTPUT);
 
 	sleep(1);
 
-	digitalWrite(POWER_PIN, 1);
+	digitalWrite(SPKR_POWER, 1);
 
 	Serial.println("Starting I2S audio test");
 
@@ -88,7 +88,7 @@ volatile int next_sample()
 }
 
 float output_attenuation = 1.0;
-float alpha = 0.9995;
+float alpha = 0.995;
 
 void reset_ramp()
 {
@@ -105,11 +105,9 @@ int scale_output(int v)
 #define BUFLEN 16
 
 void loop()
-{    
+{
 	size_t bytes_written, bytes_read;
-	uint32_t input[2];
 	int32_t buf[BUFLEN];
-	size_t buf_num_read;
 
 	// Serial.print("About to read samples... ");
 	i2s_read(i2s_mic, buf, sizeof(buf), &bytes_read, portMAX_DELAY);
@@ -121,6 +119,15 @@ void loop()
 		buf[i] = scale_output(buf[i] / 1);
 	}
 
-	if (digitalRead(OUTPUT_ENABLE_PIN))
-		i2s_write(i2s_spkr, buf, sizeof(buf), &bytes_written, portMAX_DELAY); 
+	// if (digitalRead(OUTPUT_ENABLE_PIN))
+	i2s_write(i2s_spkr, buf, bytes_read, &bytes_written, portMAX_DELAY);
+
+	static unsigned long last_spkr_reset = 0;
+	// power cycle the speaker every ten seconds in case it shut down
+	if ((millis() - last_spkr_reset) > 1000) {
+		digitalWrite(SPKR_POWER, 0);
+        delayMicroseconds(100);
+        digitalWrite(SPKR_POWER, 1);
+        last_spkr_reset = millis();
+	}
 }
