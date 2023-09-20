@@ -102,7 +102,9 @@ int scale_output(int v)
 	return u;
 }
 
-#define BUFLEN 16
+#define MAX98357_RESET_HACK
+
+#define BUFLEN 64
 
 void loop()
 {
@@ -122,12 +124,14 @@ void loop()
 	// if (digitalRead(OUTPUT_ENABLE_PIN))
 	i2s_write(i2s_spkr, buf, bytes_read, &bytes_written, portMAX_DELAY);
 
+#ifdef MAX98357_RESET_HACK
+	// XXX hack -- cut MAX98357 power every so often in case it has locked its output
 	static unsigned long last_spkr_reset = 0;
-	// power cycle the speaker every ten seconds in case it shut down
-	if ((millis() - last_spkr_reset) > 1000) {
+	if ((millis() - last_spkr_reset) > 100) {
 		digitalWrite(SPKR_POWER, 0);
-        delayMicroseconds(100);
+        delayMicroseconds(10);
         digitalWrite(SPKR_POWER, 1);
         last_spkr_reset = millis();
 	}
+#endif
 }
