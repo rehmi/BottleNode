@@ -47,7 +47,7 @@ static const i2s_pin_config_t i2s_mic_pins = {
 	.data_in_num = 3
 };
 
-#define SPKR_POWER ((gpio_num_t)9)
+#define SPKR_POWER ((gpio_num_t)8)
 // #define OUTPUT_ENABLE_PIN ((gpio_num_t)7)
 
 #include <LiteLED.h>
@@ -70,7 +70,7 @@ static const crgb_t L_WHITE = 0xe0e0e0;
 
 LiteLED LED_chain(LED_TYPE, LED_TYPE_IS_RGBW);
 
-#define TOUCH_PIN 8
+#define TOUCH_PIN 9
 
 int baseline = 60000;
 
