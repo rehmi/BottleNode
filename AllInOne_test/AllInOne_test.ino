@@ -9,14 +9,16 @@ void setup() {
   setup_LEDS();
   Serial.println("[Starting capacitive sensing]");
   setup_touch();
-  Serial.println("[Starting I2S speaker and microphone]");
-  setup_I2S();
+//   Serial.println("[Starting I2S speaker and microphone]");
+//   setup_I2S();
   Serial.println("[Starting WiFi]");
   setup_WiFi();
   Serial.println("[Starting over-the-air programming server]");
   setup_OTA();
   Serial.println("[Starting Open Sound Control server]");
   setup_OSC();
+  Serial.println("[Starting internet audio decoder]");
+  setup_myAudioI2S();
 
   Serial.println("[Startup done.]");
   Serial.println();
@@ -25,8 +27,9 @@ void setup() {
 void loop() {
   loop_touch();
   loop_LEDS();
-  loop_I2S();
+//   loop_I2S();
   loop_WiFi();
   loop_OTA();
   loop_OSC();
+  loop_myAudioI2S();
 }

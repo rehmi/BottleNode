@@ -8,13 +8,13 @@ void setup_touch(void) {
   const int n_samples = 1000;
   int touch_sum = 0;
   for (int i = 0; i < n_samples; i++) {
-    touch_sum += touchRead(TOUCH_PIN);
+    touch_sum += touchRead(PROX_ELECTRODE);
   }
   baseline = touch_sum / n_samples;
 }
 
 void loop_touch(void) {
-  raw_touch = touchRead(TOUCH_PIN);
+  raw_touch = touchRead(PROX_ELECTRODE);
   float alpha = 0.998;
   //   baseline = alpha * baseline + (1 - alpha) * raw_touch + 0.5;
   //   int touch = max(0, raw_touch - baseline);

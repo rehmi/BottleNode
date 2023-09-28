@@ -25,9 +25,8 @@ LiteLED LED_chain(LED_TYPE, LED_TYPE_IS_RGBW);
 #if USE_WS2812FX
 #include <WS2812FX.h>
 
-#define LED_COUNT 5
 
-WS2812FX ws2812fx = WS2812FX(LED_COUNT, LED_GPIO, NEO_GRB + NEO_KHZ400);
+WS2812FX ws2812fx = WS2812FX(LED_COUNT, LED_DIN, NEO_GRB + NEO_KHZ400);
 
 #define BEATS_PER_MINUTE 10.0
 #define THROB_FREQ (BEATS_PER_MINUTE / 60.0)
@@ -116,9 +115,8 @@ void loop_blink() {
 void setup_LEDS(void) {
   pinMode(BUILTIN_LED, OUTPUT);
   analogWriteResolution(8);
-
 #if USE_LiteLED
-  LED_chain.begin(LED_GPIO, 5);        // a chain of 5 LEDs on LED_GPIO
+  LED_chain.begin(LED_DIN, LED_COUNT); // a chain of 5 LEDs on LED_DIN
   LED_chain.brightness(16);            // set the initial brightness level
   LED_chain.setPixel(0, 0x80c0c0, 0);  // set initial colors
   LED_chain.setPixel(1, 0x80c0ff, 0);

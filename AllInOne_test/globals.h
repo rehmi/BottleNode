@@ -3,8 +3,9 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <WiFiUdp.h>
-
 #include "Arduino.h"
+
+#include <Audio.h>
 
 // Fix LED defns for the XIAO_ESP32S3
 #undef BUILTIN_LED
@@ -12,9 +13,17 @@
 #define LED_BUILTIN 21
 #define BUILTIN_LED 21
 
-#define LED_GPIO 7
-#define TOUCH_PIN 9
+#define MIC_SCK		((gpio_num_t)1)
+#define MIC_WS		((gpio_num_t)2)
+#define MIC_SD		((gpio_num_t)3)
+#define SPKR_LRC	((gpio_num_t)4)
+#define SPKR_BCLK	((gpio_num_t)5)
+#define SPKR_DIN	((gpio_num_t)6)
+#define LED_DIN		((gpio_num_t)7)
+#define SPKR_POWER	((gpio_num_t)8)
+#define PROX_ELECTRODE	((gpio_num_t)9)
 
+#define LED_COUNT 5
 #define USE_LiteLED 1
 #define USE_WS2812FX 0
 
@@ -32,6 +41,7 @@ extern void setup_OSC(void);
 extern void setup_I2S(void);
 extern void setup_LEDS(void);
 extern void setup_touch(void);
+extern void setup_myAudioI2S(void);
 
 extern void loop_OTA(void);
 extern void loop_WiFi(void);
@@ -39,5 +49,6 @@ extern void loop_OSC(void);
 extern void loop_I2S(void);
 extern void loop_LEDS(void);
 extern void loop_touch(void);
+extern void loop_myAudioI2S(void);
 
 extern void LED_ON(), LED_OFF(), LED_toggle();

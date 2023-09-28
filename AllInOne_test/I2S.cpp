@@ -39,21 +39,18 @@ static const i2s_config_t i2s_spkr_config = {
 };
 
 static const i2s_pin_config_t i2s_spkr_pins = {
-  .bck_io_num = 5,
-  .ws_io_num = 4,
-  .data_out_num = 6,
+  .bck_io_num = SPKR_BCLK,
+  .ws_io_num = SPKR_LRC,
+  .data_out_num = SPKR_DIN,
   .data_in_num = I2S_PIN_NO_CHANGE
 };
 
 static const i2s_pin_config_t i2s_mic_pins = {
-  .bck_io_num = 1,
-  .ws_io_num = 2,
+  .bck_io_num = MIC_SCK,
+  .ws_io_num = MIC_WS,
   .data_out_num = I2S_PIN_NO_CHANGE,
-  .data_in_num = 3
+  .data_in_num = MIC_SD
 };
-
-#define SPKR_POWER ((gpio_num_t)8)
-// #define OUTPUT_ENABLE_PIN ((gpio_num_t)7)
 
 uint32_t count = 0;
 volatile int next_sample() {
@@ -79,11 +76,11 @@ int scale_output(int v) {
 
 
 void setup_I2S(void) {
-  // pinMode(OUTPUT_ENABLE_PIN, INPUT_PULLUP);
   digitalWrite(SPKR_POWER, 0);
   gpio_set_drive_capability(SPKR_POWER, GPIO_DRIVE_CAP_3);
   pinMode(SPKR_POWER, OUTPUT);
   digitalWrite(SPKR_POWER, 1);
+
   pinMode(i2s_mic_pins.data_in_num, INPUT_PULLDOWN);
 
   i2s_driver_install(i2s_spkr, &i2s_spkr_config, 0, NULL);
@@ -92,9 +89,9 @@ void setup_I2S(void) {
   i2s_driver_install(i2s_mic, &i2s_mic_config, 0, NULL);
   i2s_set_pin(i2s_mic, &i2s_mic_pins);
 
-  gpio_set_drive_capability((gpio_num_t)i2s_spkr_pins.bck_io_num, GPIO_DRIVE_CAP_3);
-  gpio_set_drive_capability((gpio_num_t)i2s_spkr_pins.ws_io_num, GPIO_DRIVE_CAP_3);
-  gpio_set_drive_capability((gpio_num_t)i2s_spkr_pins.data_out_num, GPIO_DRIVE_CAP_3);
+  gpio_set_drive_capability(SPKR_BCLK, GPIO_DRIVE_CAP_3);
+  gpio_set_drive_capability(SPKR_LRC, GPIO_DRIVE_CAP_3);
+  gpio_set_drive_capability(SPKR_DIN, GPIO_DRIVE_CAP_3);
 }
 
 void loop_I2S(void) {
