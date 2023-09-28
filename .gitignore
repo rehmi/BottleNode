@@ -39,3 +39,11 @@ fp-lib-table
 ~*
 *-backups
 \#*
+*.bak
+
+# debugging and VSCode config
+debug_custom.json
+debug.cfg
+*.svd
+*.pcapng
+.vscode/
