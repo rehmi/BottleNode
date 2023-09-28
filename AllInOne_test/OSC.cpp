@@ -20,9 +20,9 @@ OSCErrorCode error;
 unsigned int ledState = LOW;  // LOW means led is *on*
 
 void setup_OSC() {
-  Serial.println("Starting UDP");
+  Serial.print("Opening UDP port for OSC... ");
   UDP.begin(localPort);
-  Serial.print("Local port: ");
+  Serial.print("local port: ");
 #ifdef ESP32
   Serial.println(localPort);
 #else
@@ -33,16 +33,19 @@ void setup_OSC() {
 void LED_ON() {
   digitalWrite(BUILTIN_LED, HIGH);
 }
+
 void LED_OFF() {
   digitalWrite(BUILTIN_LED, LOW);
 }
+
 void LED_toggle() {
   digitalWrite(BUILTIN_LED, !digitalRead(BUILTIN_LED));
 }
 
 void led(OSCMessage &msg) {
   ledState = msg.getFloat(0);
-  digitalWrite(BUILTIN_LED, ledState != 0);
+  pinMode(BUILTIN_LED, OUTPUT);
+  digitalWrite(BUILTIN_LED, ledState == 0);
   Serial.print("/colors/led: ");
   Serial.println(ledState);
 }
