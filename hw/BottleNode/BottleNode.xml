@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/Users/rehmi/pod/BottleNode/hw/BottleNode/BottleNode.kicad_sch</source>
+    <date>2023 September 28, Thursday 22:37:43</date>
+    <tool>Eeschema 7.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>BottleNode</title>
+        <company/>
+        <rev>1.0</rev>
+        <date>2023-09-18</date>
+        <source>BottleNode.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>10nF</value>
+      <footprint>BottleNode:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9278b627-5102-44cf-a37e-144d523920de</tstamps>
+    </comp>
+    <comp ref="C2">
+      <value>10nF</value>
+      <footprint>BottleNode:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>71e6fadf-8a9b-4598-82b3-92edd272292c</tstamps>
+    </comp>
+    <comp ref="C3">
+      <value>10nF</value>
+      <footprint>BottleNode:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ccd7d5c2-dee1-4166-a3f3-06221c874f0e</tstamps>
+    </comp>
+    <comp ref="C4">
+      <value>10nF</value>
+      <footprint>BottleNode:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>da7fa58c-9312-4386-9dbb-87cde8c73994</tstamps>
+    </comp>
+    <comp ref="D1">
+      <value>WS2812B</value>
+      <footprint>BottleNode:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm</footprint>
+      <datasheet>https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf</datasheet>
+      <libsource lib="BottleNode" part="WS2812B" description="RGB LED with integrated controller"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="RGB LED with integrated controller"/>
+      <property name="ki_keywords" value="RGB LED NeoPixel addressable"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b964ed7a-f7fd-44fd-8d49-3b40479cb9b4</tstamps>
+    </comp>
+    <comp ref="D2">
+      <value>WS2812B</value>
+      <footprint>BottleNode:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm</footprint>
+      <datasheet>https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf</datasheet>
+      <libsource lib="BottleNode" part="WS2812B" description="RGB LED with integrated controller"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="RGB LED with integrated controller"/>
+      <property name="ki_keywords" value="RGB LED NeoPixel addressable"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4c0b85ec-3c8f-4ed8-ace6-c3b7ea2eaaf8</tstamps>
+    </comp>
+    <comp ref="D3">
+      <value>WS2812B</value>
+      <footprint>BottleNode:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm</footprint>
+      <datasheet>https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf</datasheet>
+      <libsource lib="BottleNode" part="WS2812B" description="RGB LED with integrated controller"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="RGB LED with integrated controller"/>
+      <property name="ki_keywords" value="RGB LED NeoPixel addressable"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c7cfb9ce-ca58-4f97-bcf6-b1efed597186</tstamps>
+    </comp>
+    <comp ref="D4">
+      <value>WS2812B</value>
+      <footprint>BottleNode:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm</footprint>
+      <datasheet>https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf</datasheet>
+      <libsource lib="BottleNode" part="WS2812B" description="RGB LED with integrated controller"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="RGB LED with integrated controller"/>
+      <property name="ki_keywords" value="RGB LED NeoPixel addressable"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>06e43c4b-e35b-4da4-bfd8-cc6eae0f2a6e</tstamps>
+    </comp>
+    <comp ref="J1">
+      <value>Conn_01x03_Pin</value>
+      <footprint>BottleNode:PinHeader_1x03_P2.54mm_Vertical</footprint>
+      <libsource lib="BottleNode" part="Conn_01x03_Pin" description="Generic connector, single row, 01x03, script generated"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x03, script generated"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>aff554e0-18ae-45e0-89a8-2e1eba360079</tstamps>
+    </comp>
+    <comp ref="J2">
+      <value>Conn_01x02_Pin</value>
+      <footprint>BottleNode:PinHeader_1x02_P2.54mm_Vertical</footprint>
+      <libsource lib="BottleNode" part="Conn_01x02_Pin" description="Generic connector, single row, 01x02, script generated"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x02, script generated"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1d3f7a19-23c6-455d-892a-56b166e01e5e</tstamps>
+    </comp>
+    <comp ref="R1">
+      <value>0</value>
+      <footprint>BottleNode:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a866d53c-56c0-4162-9f97-f790ce16388f</tstamps>
+    </comp>
+    <comp ref="R2">
+      <value>DNI</value>
+      <footprint>BottleNode:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e95300a5-34d7-4b18-b384-aaaa04f1ed71</tstamps>
+    </comp>
+    <comp ref="R3">
+      <value>DNI</value>
+      <footprint>BottleNode:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>42bf6d3a-b675-4da2-8f99-60db5d476b39</tstamps>
+    </comp>
+    <comp ref="R4">
+      <value>0</value>
+      <footprint>BottleNode:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3b41471e-8b36-48c8-9554-b99f070614a8</tstamps>
+    </comp>
+    <comp ref="R5">
+      <value>0</value>
+      <footprint>BottleNode:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>71f856a1-5e24-4296-91a9-b2e4d554035e</tstamps>
+    </comp>
+    <comp ref="R6">
+      <value>DNI</value>
+      <footprint>BottleNode:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>06d21afb-9ff9-46ab-a939-98ded439c049</tstamps>
+    </comp>
+    <comp ref="R7">
+      <value>DNI</value>
+      <footprint>BottleNode:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder</footprint>
+      <libsource lib="BottleNode" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>79bb2e7e-bdd2-4343-aba2-dd7295f53ad5</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>~</value>
+      <footprint>BottleNode:XIAO-Generic-Thruhole-14P-2.54-21X17.8MM</footprint>
+      <libsource lib="BottleNode" part="Seeed_Studio_XIAO_ESP32S3" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8e60c5e1-427e-42bc-81a4-1768659e8cd5</tstamps>
+    </comp>
+    <comp ref="U2">
+      <value>~</value>
+      <footprint>BottleNode:INMP441_breakout</footprint>
+      <libsource lib="BottleNode" part="INMP441_breakout" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3d9e912a-7748-4bd6-96dc-6f5c75954831</tstamps>
+    </comp>
+    <comp ref="U3">
+      <value>~</value>
+      <footprint>BottleNode:MAX98357A_adafruit_breakout</footprint>
+      <libsource lib="BottleNode" part="MAX98357A_adafruit_breakout" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="BottleNode.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5e8a6210-056f-4281-885f-aaedabbce781</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="BottleNode" part="C">
+      <description>Unpolarized capacitor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="BottleNode" part="Conn_01x02_Pin">
+      <description>Generic connector, single row, 01x02, script generated</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x02_Pin</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="BottleNode" part="Conn_01x03_Pin">
+      <description>Generic connector, single row, 01x03, script generated</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x03_Pin</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="BottleNode" part="INMP441_breakout">
+      <fields>
+        <field name="Reference">U</field>
+      </fields>
+      <pins>
+        <pin num="1" name="L/R" type="passive"/>
+        <pin num="2" name="WS" type="passive"/>
+        <pin num="3" name="SCK" type="passive"/>
+        <pin num="4" name="SD" type="passive"/>
+        <pin num="5" name="VDD" type="passive"/>
+        <pin num="6" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="BottleNode" part="MAX98357A_adafruit_breakout">
+      <fields>
+        <field name="Reference">U</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD" type="passive"/>
+        <pin num="2" name="GND" type="passive"/>
+        <pin num="3" name="SD_MODE" type="passive"/>
+        <pin num="4" name="GAIN" type="passive"/>
+        <pin num="5" name="DIN" type="passive"/>
+        <pin num="6" name="BCLK" type="passive"/>
+        <pin num="7" name="LRCLK" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="BottleNode" part="R">
+      <description>Resistor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="BottleNode" part="Seeed_Studio_XIAO_ESP32S3">
+      <fields>
+        <field name="Reference">U</field>
+      </fields>
+      <pins>
+        <pin num="1" name="AD0_GT1" type="passive"/>
+        <pin num="2" name="AD1_GT2" type="passive"/>
+        <pin num="3" name="AD2_GT3" type="passive"/>
+        <pin num="4" name="AD3_GT4" type="passive"/>
+        <pin num="5" name="AD4_GT5_SDA" type="passive"/>
+        <pin num="6" name="AD5_GT6_SCL" type="passive"/>
+        <pin num="7" name="D6_G43_TX" type="passive"/>
+        <pin num="8" name="D7_G44_RX" type="passive"/>
+        <pin num="9" name="AD8_GT7_SCK" type="passive"/>
+        <pin num="10" name="AD9_GT8_MISO" type="passive"/>
+        <pin num="11" name="AD10_GT9_MOSI" type="passive"/>
+        <pin num="12" name="3V3" type="power_out"/>
+        <pin num="13" name="GND" type="power_out"/>
+        <pin num="14" name="5V" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="BottleNode" part="WS2812B">
+      <description>RGB LED with integrated controller</description>
+      <docs>https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf</docs>
+      <footprints>
+        <fp>LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">WS2812B</field>
+        <field name="Footprint">LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm</field>
+        <field name="Datasheet">https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD" type="power_in"/>
+        <pin num="2" name="DOUT" type="output"/>
+        <pin num="3" name="VSS" type="power_in"/>
+        <pin num="4" name="DIN" type="input"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="BottleNode">
+      <uri>/Users/rehmi/pod/BottleNode/hw/BottleNode/BottleNode.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+3.3V">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="D1" pin="1" pinfunction="VDD" pintype="power_in"/>
+      <node ref="D2" pin="1" pinfunction="VDD" pintype="power_in"/>
+      <node ref="D3" pin="1" pinfunction="VDD" pintype="power_in"/>
+      <node ref="D4" pin="1" pinfunction="VDD" pintype="power_in"/>
+      <node ref="J1" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="R2" pin="1" pintype="passive"/>
+      <node ref="U1" pin="12" pinfunction="3V3" pintype="power_out"/>
+      <node ref="U2" pin="5" pinfunction="VDD" pintype="passive"/>
+    </net>
+    <net code="2" name="+5V">
+      <node ref="U1" pin="14" pinfunction="5V" pintype="power_out"/>
+    </net>
+    <net code="3" name="/LED_DIN">
+      <node ref="D1" pin="4" pinfunction="DIN" pintype="input"/>
+      <node ref="R7" pin="2" pintype="passive"/>
+      <node ref="U1" pin="9" pinfunction="AD8_GT7_SCK" pintype="passive"/>
+    </net>
+    <net code="4" name="/MIC_L{slash}R">
+      <node ref="R1" pin="1" pintype="passive"/>
+      <node ref="R2" pin="2" pintype="passive"/>
+      <node ref="U2" pin="1" pinfunction="L/R" pintype="passive"/>
+    </net>
+    <net code="5" name="/MIC_SCK">
+      <node ref="U1" pin="1" pinfunction="AD0_GT1" pintype="passive"/>
+      <node ref="U2" pin="3" pinfunction="SCK" pintype="passive"/>
+    </net>
+    <net code="6" name="/MIC_SD">
+      <node ref="U1" pin="3" pinfunction="AD2_GT3" pintype="passive"/>
+      <node ref="U2" pin="4" pinfunction="SD" pintype="passive"/>
+    </net>
+    <net code="7" name="/MIC_WS">
+      <node ref="U1" pin="2" pinfunction="AD1_GT2" pintype="passive"/>
+      <node ref="U2" pin="2" pinfunction="WS" pintype="passive"/>
+    </net>
+    <net code="8" name="/PROX_ELECTRODE">
+      <node ref="J2" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="U1" pin="11" pinfunction="AD10_GT9_MOSI" pintype="passive"/>
+    </net>
+    <net code="9" name="/SPKR_BCLK">
+      <node ref="U1" pin="5" pinfunction="AD4_GT5_SDA" pintype="passive"/>
+      <node ref="U3" pin="6" pinfunction="BCLK" pintype="passive"/>
+    </net>
+    <net code="10" name="/SPKR_DIN">
+      <node ref="U1" pin="6" pinfunction="AD5_GT6_SCL" pintype="passive"/>
+      <node ref="U3" pin="5" pinfunction="DIN" pintype="passive"/>
+    </net>
+    <net code="11" name="/SPKR_GAIN">
+      <node ref="R5" pin="1" pintype="passive"/>
+      <node ref="R6" pin="2" pintype="passive"/>
+      <node ref="U3" pin="4" pinfunction="GAIN" pintype="passive"/>
+    </net>
+    <net code="12" name="/SPKR_LRC">
+      <node ref="U1" pin="4" pinfunction="AD3_GT4" pintype="passive"/>
+      <node ref="U3" pin="7" pinfunction="LRCLK" pintype="passive"/>
+    </net>
+    <net code="13" name="/SPKR_MODE">
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="R4" pin="2" pintype="passive"/>
+      <node ref="U3" pin="3" pinfunction="SD_MODE" pintype="passive"/>
+    </net>
+    <net code="14" name="/SPKR_POWER">
+      <node ref="R4" pin="1" pintype="passive"/>
+      <node ref="R6" pin="1" pintype="passive"/>
+      <node ref="U1" pin="10" pinfunction="AD9_GT8_MISO" pintype="passive"/>
+      <node ref="U3" pin="1" pinfunction="VDD" pintype="passive"/>
+    </net>
+    <net code="15" name="GND">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="D1" pin="3" pinfunction="VSS" pintype="power_in"/>
+      <node ref="D2" pin="3" pinfunction="VSS" pintype="power_in"/>
+      <node ref="D3" pin="3" pinfunction="VSS" pintype="power_in"/>
+      <node ref="D4" pin="3" pinfunction="VSS" pintype="power_in"/>
+      <node ref="J1" pin="3" pinfunction="Pin_3" pintype="passive"/>
+      <node ref="J2" pin="1" pinfunction="Pin_1" pintype="passive"/>
+      <node ref="R1" pin="2" pintype="passive"/>
+      <node ref="R3" pin="2" pintype="passive"/>
+      <node ref="R5" pin="2" pintype="passive"/>
+      <node ref="U1" pin="13" pinfunction="GND" pintype="power_out"/>
+      <node ref="U2" pin="6" pinfunction="GND" pintype="passive"/>
+      <node ref="U3" pin="2" pinfunction="GND" pintype="passive"/>
+    </net>
+    <net code="16" name="Net-(D1-DOUT)">
+      <node ref="D1" pin="2" pinfunction="DOUT" pintype="output"/>
+      <node ref="D2" pin="4" pinfunction="DIN" pintype="input"/>
+    </net>
+    <net code="17" name="Net-(D2-DOUT)">
+      <node ref="D2" pin="2" pinfunction="DOUT" pintype="output"/>
+      <node ref="D3" pin="4" pinfunction="DIN" pintype="input"/>
+    </net>
+    <net code="18" name="Net-(D3-DOUT)">
+      <node ref="D3" pin="2" pinfunction="DOUT" pintype="output"/>
+      <node ref="D4" pin="4" pinfunction="DIN" pintype="input"/>
+    </net>
+    <net code="19" name="Net-(D4-DOUT)">
+      <node ref="D4" pin="2" pinfunction="DOUT" pintype="output"/>
+      <node ref="J1" pin="2" pinfunction="Pin_2" pintype="passive"/>
+      <node ref="R7" pin="1" pintype="passive"/>
+    </net>
+    <net code="20" name="unconnected-(U1-D6_G43_TX-Pad7)">
+      <node ref="U1" pin="7" pinfunction="D6_G43_TX" pintype="passive"/>
+    </net>
+    <net code="21" name="unconnected-(U1-D7_G44_RX-Pad8)">
+      <node ref="U1" pin="8" pinfunction="D7_G44_RX" pintype="passive"/>
+    </net>
+  </nets>
+</export>
