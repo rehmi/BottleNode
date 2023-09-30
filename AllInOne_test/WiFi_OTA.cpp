@@ -60,14 +60,20 @@ void loop_WiFi() {
 void setup_WiFi() {
   WiFi.mode(WIFI_STA);
 
-  // // Wait for connection
-  // while (WiFi.status() != WL_CONNECTED) {
-  //     delay(500);
-  //     Serial.print(".");
-  // }
-
   WiFiMulti wifiMulti;
-  wifiMulti.addAP("*******", "   ò_ô   ");
+  wifiMulti.addAP("mini0n", "ohmyglob");
+  // wifiMulti.addAP("oni0n", "ohmyglob");
+  // wifiMulti.addAP("unacceptable", "ohmyglob");
+  // wifiMulti.addAP("erPhone13", "ohmyglob");
+  // wifiMulti.addAP("*******", "   ò_ô   ");
+
+
+  // Wait for connection
+  // while (WiFi.status() != WL_CONNECTED) {
+  while (wifiMulti.run() != WL_CONNECTED) {
+      delay(500);
+      Serial.print(".");
+  }
 
   if (wifiMulti.run() == WL_CONNECTED) {
     Serial.print("Connected to SSID: ");

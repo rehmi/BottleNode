@@ -41,7 +41,7 @@ extern void setup_OSC(void);
 extern void setup_I2S(void);
 extern void setup_LEDS(void);
 extern void setup_touch(void);
-extern void setup_myAudioI2S(void);
+extern void setup_audio(void);
 
 extern void loop_OTA(void);
 extern void loop_WiFi(void);
@@ -49,6 +49,6 @@ extern void loop_OSC(void);
 extern void loop_I2S(void);
 extern void loop_LEDS(void);
 extern void loop_touch(void);
-extern void loop_myAudioI2S(void);
+extern void loop_audio(void);
 
 extern void LED_ON(), LED_OFF(), LED_toggle();

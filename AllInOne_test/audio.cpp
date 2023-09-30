@@ -50,7 +50,7 @@ void audio_eof_speech(const char *info) {
 // Create audio object
 Audio audio;
 
-void setup_myAudioI2S(void)
+void setup_audio(void)
 {
     digitalWrite(SPKR_POWER, 0);
     gpio_set_drive_capability(SPKR_POWER, GPIO_DRIVE_CAP_3);
@@ -109,10 +109,10 @@ void setup_myAudioI2S(void)
     //  audio.connecttospeech("Wenn die Hunde schlafen, kann der Wolf gut Schafe stehlen.", "de"); // Google TTS
 }
 
-void loop_myAudioI2S(void)
+void loop_audio(void)
 {
     // Set thevolume (0-100)
-    audio.setVolume(min(8, (int)(touchfactor *  10)));
+    audio.setVolume(min(6, (int)(touchfactor *  12)));
     // Run audio player
     audio.loop();
 }

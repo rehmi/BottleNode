@@ -18,7 +18,7 @@ void setup() {
   Serial.println("[Starting Open Sound Control server]");
   setup_OSC();
   Serial.println("[Starting internet audio decoder]");
-  setup_myAudioI2S();
+  setup_audio();
 
   Serial.println("[Startup done.]");
   Serial.println();
@@ -31,5 +31,5 @@ void loop() {
   loop_WiFi();
   loop_OTA();
   loop_OSC();
-  loop_myAudioI2S();
+  loop_audio();
 }
