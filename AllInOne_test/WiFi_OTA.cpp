@@ -1,5 +1,5 @@
 #include "globals.h"
-
+#include "secrets.h"
 // ==================================================
 
 void setup_OTA() {
@@ -61,7 +61,7 @@ void setup_WiFi() {
   WiFi.mode(WIFI_STA);
 
   WiFiMulti wifiMulti;
-  wifiMulti.addAP("mini0n", "ohmyglob");
+  wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
   // wifiMulti.addAP("oni0n", "ohmyglob");
   // wifiMulti.addAP("unacceptable", "ohmyglob");
   // wifiMulti.addAP("erPhone13", "ohmyglob");

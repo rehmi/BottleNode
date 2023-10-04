@@ -25,11 +25,11 @@ void setup() {
 }
 
 void loop() {
-  loop_touch();
+  // loop_touch();
   loop_LEDS();
 //   loop_I2S();
   loop_WiFi();
-  loop_OTA();
-  loop_OSC();
-  loop_audio();
+  // loop_OTA();
+  // loop_OSC();
+  // loop_audio();
 }

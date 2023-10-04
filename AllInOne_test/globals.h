@@ -19,11 +19,11 @@
 #define SPKR_LRC	((gpio_num_t)4)
 #define SPKR_BCLK	((gpio_num_t)5)
 #define SPKR_DIN	((gpio_num_t)6)
-#define LED_DIN		((gpio_num_t)7)
+#define LED_DIN		((gpio_num_t)9)
 #define SPKR_POWER	((gpio_num_t)8)
-#define PROX_ELECTRODE	((gpio_num_t)9)
+#define PROX_ELECTRODE	((gpio_num_t)7)
 
-#define LED_COUNT 5
+#define LED_COUNT 8
 #define USE_LiteLED 1
 #define USE_WS2812FX 0
 

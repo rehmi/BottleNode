@@ -1,3 +1,5 @@
+#include <OSCMLite.h>
+
 #include "globals.h"
 
 #if USE_LiteLED
@@ -5,12 +7,12 @@
 
 // Choose the LED type from the list below.
 // Comment out all but one LED_TYPE.
-#define LED_TYPE LED_STRIP_WS2812
-// #define LED_TYPE        LED_STRIP_SK6812
+// #define LED_TYPE LED_STRIP_WS2812
+#define LED_TYPE        LED_STRIP_SK6812
 // #define LED_TYPE        LED_STRIP_APA106
 // #define LED_TYPE        LED_STRIP_SM16703
 
-#define LED_TYPE_IS_RGBW 0
+#define LED_TYPE_IS_RGBW 1
 
 static const crgb_t L_RED = 0xff0000;
 static const crgb_t L_GREEN = 0x00ff00;
