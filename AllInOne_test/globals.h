@@ -3,9 +3,14 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <WiFiUdp.h>
+#include <WebSocketsClient.h>
 #include "Arduino.h"
 
 #include <Audio.h>
+#include <OSCMLite.h>
+
+#define USE_SERIAL Serial
+
 
 // Fix LED defns for the XIAO_ESP32S3
 #undef BUILTIN_LED
@@ -37,6 +42,7 @@ extern float output_attenuation;
 
 extern void setup_OTA(void);
 extern void setup_WiFi(void);
+extern void setup_websocket(void);
 extern void setup_OSC(void);
 extern void setup_I2S(void);
 extern void setup_LEDS(void);
@@ -45,6 +51,7 @@ extern void setup_audio(void);
 
 extern void loop_OTA(void);
 extern void loop_WiFi(void);
+extern void loop_websocket(void);
 extern void loop_OSC(void);
 extern void loop_I2S(void);
 extern void loop_LEDS(void);
@@ -52,3 +59,19 @@ extern void loop_touch(void);
 extern void loop_audio(void);
 
 extern void LED_ON(), LED_OFF(), LED_toggle();
+extern void set_LEDS_brightness(uint8_t * brightness);
+extern void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b);
+extern void sendBacktoHost(uint8_t *encodedMessage, size_t encodedLength);
+extern void checkReceive(struct GOTMONEY* ms);
+
+struct GOTMONEY {
+    uint8_t * value;
+    size_t size;
+    bool isNew = false;
+};
+
+struct LOSTMONEY {
+    uint8_t * value;
+    size_t size;
+    bool isNew = false;
+};

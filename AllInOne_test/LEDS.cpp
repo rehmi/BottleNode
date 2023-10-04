@@ -12,7 +12,7 @@
 // #define LED_TYPE        LED_STRIP_APA106
 // #define LED_TYPE        LED_STRIP_SM16703
 
-#define LED_TYPE_IS_RGBW 1
+#define LED_TYPE_IS_RGBW 0
 
 static const crgb_t L_RED = 0xff0000;
 static const crgb_t L_GREEN = 0x00ff00;
@@ -42,6 +42,19 @@ uint32_t scale_color(float c, uint32_t color) {
     cp[i] = cp[i] * c;
   }
   return color;
+}
+
+void hexdump(const void *mem, uint32_t len, uint8_t cols = 16) {
+	const uint8_t* src = (const uint8_t*) mem;
+	USE_SERIAL.printf("\n[HEXDUMP] Address: 0x%08X len: 0x%X (%d)", (ptrdiff_t)src, len, len);
+	for(uint32_t i = 0; i < len; i++) {
+		if(i % cols == 0) {
+			USE_SERIAL.printf("\n[0x%08X] 0x%08X: ", (ptrdiff_t)src, i);
+		}
+		USE_SERIAL.printf("%02X ", *src);
+		src++;
+	}
+	USE_SERIAL.printf("\n");
 }
 
 uint16_t xmas_twinkle(void) {
@@ -120,16 +133,29 @@ void setup_LEDS(void) {
 #if USE_LiteLED
   LED_chain.begin(LED_DIN, LED_COUNT); // a chain of 5 LEDs on LED_DIN
   LED_chain.brightness(16);            // set the initial brightness level
-  LED_chain.setPixel(0, 0x80c0c0, 0);  // set initial colors
-  LED_chain.setPixel(1, 0x80c0ff, 0);
-  LED_chain.setPixel(2, 0x40c0ff, 0);
-  LED_chain.setPixel(3, 0x00c0ff, 0);
-  LED_chain.setPixel(4, 0x0080ff, 1);  // update (show) the chain
+  for (int i=0; i<LED_COUNT; i++)  {
+    if (i == LED_COUNT-1) {
+      LED_chain.setPixel(i, 0x80c0c0, 1);  // update (show) the chain
+    } else  {
+      LED_chain.setPixel(i, L_BLUE, 0);  // set initial colors
+    }
+  }
 #endif                                 // USE_LiteLED
 
 #if USE_WS2812FX
   setup_ws2812fx();
 #endif  // USE_WS2812FX
+}
+
+// Function to convert RGB values to a single unsigned int in hex
+uint32_t rgbToHex(uint8_t r, uint8_t g, uint8_t b) {
+    // Ensure that the RGB values are within the valid range (0-255)
+    r = (r < 0) ? 0 : ((r > 255) ? 255 : r);
+    g = (g < 0) ? 0 : ((g > 255) ? 255 : g);
+    b = (b < 0) ? 0 : ((b > 255) ? 255 : b);
+
+    // Format the hexadecimal string
+    return ((uint32_t)r << 16) | ((uint32_t)g << 8) | (uint32_t)b;
 }
 
 void loop_LEDS(void) {
@@ -140,6 +166,37 @@ void loop_LEDS(void) {
 
 #if USE_LiteLED
   LED_chain.brightness(brightness, 1);
+#endif  // USE_LiteLED
+
+#if USE_WS2812FX
+  loop_ws2812fx();
+#endif
+}
+
+
+void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b) {
+  uint32_t hexColor  = rgbToHex(r, g, b);
+  #if USE_LiteLED
+    for (int i=0; i<LED_COUNT; i++)  {
+      if (i == LED_COUNT-1) {
+        LED_chain.setPixel(i, (crgb_t)hexColor, 1);  // update (show) the chain
+        // LED_chain.setPixel(i, 0x0000ff, 1);  // update (show) the chain
+      } else  {
+        LED_chain.setPixel(i, (crgb_t)hexColor, 0);  // update (show) the chain
+        // LED_chain.setPixel(i, (crgb_t)hexColor, 0);  // set initial colors
+      }
+  #endif  // USE_LiteLED
+    }
+}
+
+void set_LEDS_brightness(uint8_t * brightness) {
+  // uint8_t brightness = min(touchfactor * 255.0, 255.0);
+
+  //  loop_blink();
+  analogWrite(BUILTIN_LED, * brightness ^ 0xff);
+
+#if USE_LiteLED
+  LED_chain.brightness(* brightness, 1);
 #endif  // USE_LiteLED
 
 #if USE_WS2812FX

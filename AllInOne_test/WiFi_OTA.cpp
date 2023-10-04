@@ -1,5 +1,10 @@
 #include "globals.h"
 #include "secrets.h"
+
+WiFiMulti wifiMulti;
+WebSocketsClient webSocket;
+OSCMLite oscm;
+
 // ==================================================
 
 void setup_OTA() {
@@ -60,13 +65,17 @@ void loop_WiFi() {
 void setup_WiFi() {
   WiFi.mode(WIFI_STA);
 
-  WiFiMulti wifiMulti;
+  	for(uint8_t t = 4; t > 0; t--) {
+		USE_SERIAL.printf("[SETUP] BOOT WAIT %d...\n", t);
+		USE_SERIAL.flush();
+		delay(1000);
+	}
+
   wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
   // wifiMulti.addAP("oni0n", "ohmyglob");
   // wifiMulti.addAP("unacceptable", "ohmyglob");
   // wifiMulti.addAP("erPhone13", "ohmyglob");
   // wifiMulti.addAP("*******", "   ò_ô   ");
-
 
   // Wait for connection
   // while (WiFi.status() != WL_CONNECTED) {
@@ -109,4 +118,78 @@ void setup_WiFi() {
 
   // // Add service to MDNS-SD
   // MDNS.addService("http", "tcp", 80);
+}
+
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
+	switch(type) {
+    	case WStype_CONNECTED:
+			USE_SERIAL.printf("[WSc] Connected to url: %s\n", payload);
+			break;
+		case WStype_DISCONNECTED:
+			USE_SERIAL.printf("[WSc] Disconnected!\n");
+			break;
+		case WStype_TEXT:
+			USE_SERIAL.printf("[WSc] get text: %s\n", payload);
+			break;
+		case WStype_BIN:
+      GOTMONEY penny;
+      LOSTMONEY dollah;
+
+			// USE_SERIAL.printf("[WSc] get binary length: %u\n", length);
+			// hexdump(payload, length);
+      penny.value = payload;
+      penny.size = length;
+      penny.isNew = true;
+
+      // Send to OSCLite library to decode 
+      checkReceive(&penny);
+
+      // Create an OSCMessage object using the constructor-like function
+       OSCMLite* oscMsg = oscm.createOSCMessage("/max/led", ",i");
+
+      // Add arguments to the OSCMessage using the setter function
+      // int floatValue = random(0, 100);
+      int intValue = random(0, 100);
+      // oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
+			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
+			// oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
+      size_t encodedLength;
+
+      // Encode the OSC message
+      uint8_t *encodedMessage = oscm.encodeOSCMessage(oscMsg, &encodedLength);
+      // hexdump(encodedMessage, encodedLength);
+
+      dollah.value = encodedMessage;
+      dollah.size = encodedLength;
+      dollah.isNew = true;
+
+      sendBacktoHost(dollah.value, dollah.size);
+			// webSocket.sendBIN(encodedMessage, encodedLength);
+
+      // Cleanup
+      oscm.destroyOSCMessage(oscMsg);
+			break;
+	}
+
+}
+
+void sendBacktoHost(uint8_t *encodedMessage, size_t encodedLength)  {
+  webSocket.sendBIN(encodedMessage, encodedLength);
+}
+
+void loop_websocket() {
+	webSocket.loop();
+}
+
+void setup_websocket()  {
+
+// server address, port and URL
+	webSocket.begin(IP_ADDR, PORT, "/");
+
+	// // event handler
+	webSocket.onEvent(webSocketEvent);
+
+	// try ever 5000 again if connection has failed
+	webSocket.setReconnectInterval(1000);
+
 }
