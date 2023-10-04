@@ -63,6 +63,9 @@ extern void set_LEDS_brightness(uint8_t * brightness);
 extern void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b);
 extern void sendBacktoHost(uint8_t *encodedMessage, size_t encodedLength);
 extern void checkReceive(struct GOTMONEY* ms);
+extern void setOutputInt(char* address, int out);
+extern void setOutputFloat(char* address, float out);
+extern void setOutputString(char* address, char * out);
 
 struct GOTMONEY {
     uint8_t * value;

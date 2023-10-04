@@ -3,7 +3,7 @@
 
 WiFiMulti wifiMulti;
 WebSocketsClient webSocket;
-OSCMLite oscm;
+// OSCMLite oscm;
 
 // ==================================================
 
@@ -64,12 +64,6 @@ void loop_WiFi() {
 
 void setup_WiFi() {
   WiFi.mode(WIFI_STA);
-
-  	for(uint8_t t = 4; t > 0; t--) {
-		USE_SERIAL.printf("[SETUP] BOOT WAIT %d...\n", t);
-		USE_SERIAL.flush();
-		delay(1000);
-	}
 
   wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
   // wifiMulti.addAP("oni0n", "ohmyglob");
@@ -133,9 +127,6 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 			break;
 		case WStype_BIN:
       GOTMONEY penny;
-      LOSTMONEY dollah;
-
-			// USE_SERIAL.printf("[WSc] get binary length: %u\n", length);
 			// hexdump(payload, length);
       penny.value = payload;
       penny.size = length;
@@ -144,37 +135,23 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       // Send to OSCLite library to decode 
       checkReceive(&penny);
 
-      // Create an OSCMessage object using the constructor-like function
-       OSCMLite* oscMsg = oscm.createOSCMessage("/max/led", ",i");
+      // Just for demonstration
+      // setOutputInt(random(0, 100));
+      setOutputFloat("/max/led", 100.2);
+      setOutputString("/max/led", "hello, max");
+      setOutputInt("/max/led", random(0, 100));
 
-      // Add arguments to the OSCMessage using the setter function
-      // int floatValue = random(0, 100);
-      int intValue = random(0, 100);
-      // oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
-			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
-			// oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
-      size_t encodedLength;
-
-      // Encode the OSC message
-      uint8_t *encodedMessage = oscm.encodeOSCMessage(oscMsg, &encodedLength);
-      // hexdump(encodedMessage, encodedLength);
-
-      dollah.value = encodedMessage;
-      dollah.size = encodedLength;
-      dollah.isNew = true;
-
-      sendBacktoHost(dollah.value, dollah.size);
-			// webSocket.sendBIN(encodedMessage, encodedLength);
-
-      // Cleanup
-      oscm.destroyOSCMessage(oscMsg);
 			break;
 	}
 
 }
 
 void sendBacktoHost(uint8_t *encodedMessage, size_t encodedLength)  {
-  webSocket.sendBIN(encodedMessage, encodedLength);
+  if (webSocket.isConnected())  {
+    webSocket.sendBIN(encodedMessage, encodedLength);
+  } else {
+    Serial.println("Server Disconnected --> Packet cannot be delivered!");
+  }
 }
 
 void loop_websocket() {

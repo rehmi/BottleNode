@@ -13,6 +13,7 @@
 
 // ==============================================
 OSCErrorCode error;
+OSCMLite oscm;
 
 unsigned int ledState = LOW;  // LOW means led is *on*
 
@@ -66,6 +67,79 @@ void checkReceive(struct GOTMONEY* ms) {
       Serial.println(error);
       }
     }
+}
+
+void setOutputInt(char * address, int out)  {
+      LOSTMONEY dollah;
+      int intValue = out;
+      // Create an OSCMessage object using the constructor-like function
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",i");
+
+      // Add arguments to the OSCMessage using the setter function
+			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
+
+      // Encode the OSC message
+      size_t encodedLength;
+      uint8_t *encodedMessage = oscm.encodeOSCMessage(oscMsg, &encodedLength);
+      // hexdump(encodedMessage, encodedLength);
+
+      dollah.value = encodedMessage;
+      dollah.size = encodedLength;
+      dollah.isNew = true;
+
+      sendBacktoHost(dollah.value, dollah.size);
+
+      // Cleanup
+      oscm.destroyOSCMessage(oscMsg);
+}
+
+void setOutputFloat(char * address, float out)  {
+      LOSTMONEY dollah;
+      float floatValue = out;
+      // Create an OSCMessage object using the constructor-like function
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",f");
+
+      // Add arguments to the OSCMessage using the setter function
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
+
+      // Encode the OSC message
+      size_t encodedLength;
+      uint8_t *encodedMessage = oscm.encodeOSCMessage(oscMsg, &encodedLength);
+      // hexdump(encodedMessage, encodedLength);
+
+      dollah.value = encodedMessage;
+      dollah.size = encodedLength;
+      dollah.isNew = true;
+
+      sendBacktoHost(dollah.value, dollah.size);
+
+      // Cleanup
+      oscm.destroyOSCMessage(oscMsg);
+}
+
+void setOutputString(char * address, char * out)  {
+      LOSTMONEY dollah;
+      const char* stringValue = out;
+
+      // Create an OSCMessage object using the constructor-like function
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",s");
+
+      // Add arguments to the OSCMessage using the setter function
+			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
+
+      // Encode the OSC message
+      size_t encodedLength;
+      uint8_t *encodedMessage = oscm.encodeOSCMessage(oscMsg, &encodedLength);
+      // hexdump(encodedMessage, encodedLength);
+
+      dollah.value = encodedMessage;
+      dollah.size = encodedLength;
+      dollah.isNew = true;
+
+      sendBacktoHost(dollah.value, dollah.size);
+
+      // Cleanup
+      oscm.destroyOSCMessage(oscMsg);
 }
 
 
