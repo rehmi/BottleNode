@@ -30,7 +30,7 @@ void setup() {
 void loop() {
   // loop_touch();
   // loop_LEDS();
-//   loop_I2S();
+  loop_I2S();
   loop_WiFi();
   loop_websocket();
   // loop_OTA();

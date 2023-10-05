@@ -1,28 +1,51 @@
 // --------------------------------------------------------------------------
-// OSC via WebSocket
+// Communicate with Max via OSC over Websocket
 // --------------------------------------------------------------------------
 "use strict";
 
 const webSocket = require("ws");
-
 const osc = require("osc");
 const maxAPI = require("max-api");
+const multer = require('multer');
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
 
-const wss = new webSocket.Server({ port: 12345 });
+// Get wifi address for local server
+const networkInterfaces = os.networkInterfaces();
+const wifiInterface = networkInterfaces['Wi-Fi'];
+const wifiAddress = wifiInterface[1].address;
 
+// Define the ports to be used for the HTTP and Websocket servers
+const PORT_WS = 12345;
+const PORT_HTTP = 12346;
+
+/**First Add HTTP app to access a local folder called "music", where the mp3 files will be stored
+ * Max will be able to access the files via the HTTP server to play them.
+ */
+const app = express();
+app.use('/music', express.static('music'));
+
+app.get('/list-music', (req, res) => {
+  fs.readdir(path.join(__dirname, 'music'), (err, files) => {
+    if (err) return res.status(500).send("Server Error");
+    
+    // Filter out non-mp3 files or add more extensions if needed
+    const musicFiles = files.filter(file => path.extname(file) === '.mp3');
+    res.json(musicFiles);
+  });
+});
+
+app.listen(PORT_HTTP, () => {
+  console.log(`Server started on http://localhost:${PORT_HTTP}`);
+});
+
+/** Next create a websocket server so the ESP32 can communicate with Max.  This is a separate port from the above 
+ * music server, so make sure to set the port properly in the ESP32 code.
+ */
+const wss = new webSocket.Server({ port: PORT_WS });
 let webSocketPort;
-
-// let tcpServer = new osc.TCPSocketPort({}); 
-// tcpServer.open('127.0.0.1', 53000); 
-// tcpServer.send({ address: "/version", args: 1, }, '127.0.0.1', 53000); 
-// tcpServer.on('data', function(data) { console.log('DATA: ' + data); });
-
-// let server = new osc.TCPSocketPort({});
-
-// server.open('127.0.0.1', 57121); // change to remote host/port
-// server.on('ready', () => {
-//   console.log('ready');
-// });
 
 wss.on("connection", function connection(ws) {
 	console.log("connection");
@@ -49,7 +72,7 @@ wss.on("connection", function connection(ws) {
 	})
 
 	ws.on("close", function stop() {
-		maxAPI.removeHandlers("send");
+		maxAPI.removeHandlers("sendBrightness", "sendColor");
 		console.log("Connection closed");
 
 		ws.terminate();
@@ -57,8 +80,43 @@ wss.on("connection", function connection(ws) {
 		isConnected = false;
 	});
 
+		// Handle the Max audio URL here...
+		maxAPI.addHandler("sendAudioUrl", (...args) => {
+			// http://localhost:${PORT_HTTP}/music/${args[0]}
+			console.log("send args: " + args);
+			if (webSocketPort && isConnected) {
+				webSocketPort.send({
+					address: "/max/audio/url",
+					args: [
+						{
+							type: "s",
+							value: `${wifiAddress}:${PORT_HTTP}/music/${args[0]}`,
+						}
+					],
+					
+				});
+			}
+		});
 
-	// Handle the Max interactions here...
+	// Handle the Max volume setter here...
+	maxAPI.addHandler("sendAudioVol", (...args) => {
+		//console.log("send args: " + args);
+		if (webSocketPort && isConnected) {
+			webSocketPort.send({
+				address: "/max/audio/volume",
+				args: [
+					{
+						type: "i",
+						value: args[0],
+					}
+				],
+				
+			});
+		}
+	});
+
+
+	// Handle the Max LED brightness here...
 	maxAPI.addHandler("sendBrightness", (...args) => {
 		//console.log("send args: " + args);
 		if (webSocketPort && isConnected) {
@@ -73,11 +131,10 @@ wss.on("connection", function connection(ws) {
 				
 			});
 		}
-
 	});
 
 
-		// Handle the Max interactions here...
+		// Handle the Max LED color here...
 		maxAPI.addHandler("sendColor", (...args) => {
 			console.log("send args: " + args);
 			if (webSocketPort && isConnected) {
@@ -102,26 +159,6 @@ wss.on("connection", function connection(ws) {
 			}
 	
 		});
-
-
-		// Handle the Max interactions here...
-		maxAPI.addHandler("send1float", (...args) => {
-			//console.log("send args: " + args);
-			if (webSocketPort && isConnected) {
-				webSocketPort.send({
-					address: "/max/led/brightness",
-					args: [
-						{
-							type: "f",
-							value: args[0],
-						}
-					],
-					
-				});
-			}
-	
-		});
-
 
 });
 

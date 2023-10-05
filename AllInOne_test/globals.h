@@ -58,15 +58,21 @@ extern void loop_LEDS(void);
 extern void loop_touch(void);
 extern void loop_audio(void);
 
-extern void LED_ON(), LED_OFF(), LED_toggle();
-extern void set_LEDS_brightness(uint8_t * brightness);
-extern void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b);
+// For communications 
 extern void sendBacktoHost(uint8_t *encodedMessage, size_t encodedLength);
 extern void checkReceive(struct GOTMONEY* ms);
 extern void setOutputInt(char* address, int out);
 extern void setOutputFloat(char* address, float out);
 extern void setOutputString(char* address, char * out);
 
+// For LEDS 
+extern void LED_ON(), LED_OFF(), LED_toggle();
+extern void set_LEDS_brightness(uint8_t * brightness);
+extern void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b);
+
+// For Audio 
+extern void set_audio_url(char * url, int len);
+extern void set_audio_volume(uint8_t * in);
 struct GOTMONEY {
     uint8_t * value;
     size_t size;

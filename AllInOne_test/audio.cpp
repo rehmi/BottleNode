@@ -1,6 +1,8 @@
 #include "globals.h"
 
 // Audio status functions
+// Create audio object
+Audio audio;
 
 void audio_info(const char *info) {
     Serial.print("info        ");
@@ -47,8 +49,18 @@ void audio_eof_speech(const char *info) {
     Serial.println(info);
 }
 
-// Create audio object
-Audio audio;
+void set_audio_url(char * in, int len) {
+  char url[len];
+  Serial.println("Connecting to host: ");
+  for(int i = 0; i < len; i++) {
+        url[i]=in[i];
+    }
+  audio.connecttohost(url);
+}
+
+void set_audio_volume(uint8_t * in) {
+    audio.setVolume(*in);
+}
 
 void setup_audio(void)
 {
@@ -80,8 +92,8 @@ void setup_audio(void)
     // "http://38.96.148.28:8342/stream";
 
     //  *** radio streams ***
-    while (!audio.connecttohost(URL))
-        ;
+    // while (!audio.connecttohost(URL))
+    //     ;
 
     //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
     //  audio.connecttohost("http://mcrscast.mcr.iol.pt/cidadefm");                                         // mp3

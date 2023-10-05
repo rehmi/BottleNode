@@ -45,7 +45,21 @@ void led(OSCMessage &msg, int patternOffset) {
         int b =  msg.getInt(2);
         set_LEDS_color(r, g, b);
   } else {
-            Serial.print("No Matching LED Codes! ");
+            Serial.print("No Matching LED Codes! \n");
+  }
+}
+
+void audio(OSCMessage &msg, int patternOffset) {
+  if(msg.match("/max/audio/url")){
+    int length=msg.getDataLength(0);
+    char str[length];
+    msg.getString(0, str, length);
+    set_audio_url(str, length);
+  } else if (msg.match("/max/audio/volume")) {
+    uint8_t state = msg.getInt(0); 
+    set_audio_volume(&state);
+  } else {
+            Serial.print("No Matching Audio Codes! \n");
   }
 }
 
@@ -60,6 +74,7 @@ void checkReceive(struct GOTMONEY* ms) {
       }
     if (!msg.hasError()) {
       msg.route("/max/led", led); // Sends data to function
+      msg.route("/max/audio", audio); // Sends data to function
     } 
     else {
       error = msg.getError();

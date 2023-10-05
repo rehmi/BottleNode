@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 1417.0, 99.0, 1650.0, 1265.0 ],
+		"rect" : [ 35.0, 85.0, 1650.0, 1265.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,6 +40,96 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-69",
+					"maxclass" : "number",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 878.5, 493.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 0.686274509803922, 0.541176470588235, 0.443137254901961, 1.0 ],
+					"bubble" : 1,
+					"bubbleside" : 3,
+					"fontname" : "CMU Serif ",
+					"id" : "obj-33",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 872.5, 428.0, 97.0, 58.0 ],
+					"presentation_linecount" : 3,
+					"text" : "Audio Volume (0-100)",
+					"textcolor" : [ 0.094117647058824, 0.086274509803922, 0.062745098039216, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 0.686274509803922, 0.541176470588235, 0.443137254901961, 1.0 ],
+					"fontname" : "CMU Serif ",
+					"id" : "obj-35",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 882.5, 550.0, 128.0, 24.0 ],
+					"text" : "prepend sendAudioVol",
+					"textcolor" : [ 0.094117647058824, 0.086274509803922, 0.062745098039216, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 0.686274509803922, 0.541176470588235, 0.443137254901961, 1.0 ],
+					"bubble" : 1,
+					"bubbleside" : 3,
+					"fontname" : "CMU Serif ",
+					"id" : "obj-20",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 705.5, 450.0, 103.0, 58.0 ],
+					"presentation_linecount" : 3,
+					"text" : "Audio File Name (in /music)",
+					"textcolor" : [ 0.094117647058824, 0.086274509803922, 0.062745098039216, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"bgcolor" : [ 0.686274509803922, 0.541176470588235, 0.443137254901961, 1.0 ],
+					"fontname" : "CMU Serif ",
+					"id" : "obj-19",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 711.5, 550.0, 126.0, 24.0 ],
+					"text" : "prepend sendAudioUrl",
+					"textcolor" : [ 0.094117647058824, 0.086274509803922, 0.062745098039216, 1.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 711.5, 513.0, 91.0, 22.0 ],
+					"text" : "sample-6s.mp3"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 13.0,
 					"id" : "obj-57",
@@ -48,7 +138,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 427.833333333333371, 1072.5, 82.75, 23.0 ],
-					"text" : "64."
+					"text" : "46."
 				}
 
 			}
@@ -544,8 +634,6 @@
 					"saved_object_attributes" : 					{
 						"autostart" : 0,
 						"defer" : 0,
-						"node_bin_path" : "",
-						"npm_bin_path" : "",
 						"watch" : 0
 					}
 ,
@@ -895,6 +983,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-19", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-63", 1 ],
 					"source" : [ "obj-2", 0 ]
 				}
@@ -930,6 +1025,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-19", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-22", 0 ],
 					"source" : [ "obj-30", 0 ]
 				}
@@ -946,6 +1048,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-18", 0 ],
 					"source" : [ "obj-32", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-35", 0 ]
 				}
 
 			}
@@ -1074,6 +1183,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"source" : [ "obj-69", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-13", 0 ],
 					"order" : 2,
 					"source" : [ "obj-7", 0 ]
@@ -1105,7 +1221,7 @@
 			}
 , 			{
 				"name" : "max-osc-websocket.js",
-				"bootpath" : "~/Documents/Arduino/Max",
+				"bootpath" : "~/Documents/GitHub/BottleNode/Max",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
