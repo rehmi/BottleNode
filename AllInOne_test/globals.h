@@ -73,6 +73,10 @@ extern void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b);
 // For Audio 
 extern void set_audio_url(char * url, int len);
 extern void set_audio_volume(uint8_t * in);
+
+// For WIFI
+extern void get_ID(char * id);
+
 struct GOTMONEY {
     uint8_t * value;
     size_t size;

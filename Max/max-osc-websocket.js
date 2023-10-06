@@ -14,6 +14,7 @@ const os = require('os');
 
 // Get wifi address for local server
 const networkInterfaces = os.networkInterfaces();
+// console.log(networkInterfaces);
 const wifiInterface = networkInterfaces['Wi-Fi'];
 const wifiAddress = wifiInterface[1].address;
 
@@ -97,6 +98,22 @@ wss.on("connection", function connection(ws) {
 				});
 			}
 		});
+
+	// Get identifier for this IP...
+	maxAPI.addHandler("getIdentifier", (...args) => {
+		//console.log("send args: " + args);
+		if (webSocketPort && isConnected) {
+			webSocketPort.send({
+				address: "/max/id",
+				args: [
+					{
+					}
+				],
+				
+			});
+		}
+	});
+
 
 	// Handle the Max volume setter here...
 	maxAPI.addHandler("sendAudioVol", (...args) => {

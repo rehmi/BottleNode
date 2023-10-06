@@ -63,6 +63,29 @@ void audio(OSCMessage &msg, int patternOffset) {
   }
 }
 
+void identify(OSCMessage &msg, int patternOffset)  {
+      LOSTMONEY dollah;
+      char ipStr[16];
+      get_ID(ipStr);
+
+      // Create an OSCMessage object using the constructor-like function
+      OSCMLite* oscMsg = oscm.createOSCMessage("/max/id", ",s");
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
+
+      // Encode the OSC message
+      size_t encodedLength;
+      uint8_t *encodedMessage = oscm.encodeOSCMessage(oscMsg, &encodedLength);
+
+      dollah.value = encodedMessage;
+      dollah.size = encodedLength;
+      dollah.isNew = true;
+
+      sendBacktoHost(dollah.value, dollah.size);
+
+      // Cleanup
+      oscm.destroyOSCMessage(oscMsg);
+}
+
 void checkReceive(struct GOTMONEY* ms) {
   uint8_t * payload = ms->value;
   OSCMessage msg;  
@@ -75,6 +98,7 @@ void checkReceive(struct GOTMONEY* ms) {
     if (!msg.hasError()) {
       msg.route("/max/led", led); // Sends data to function
       msg.route("/max/audio", audio); // Sends data to function
+      msg.route("/max/id", identify); // Sends data to function
     } 
     else {
       error = msg.getError();
@@ -87,11 +111,15 @@ void checkReceive(struct GOTMONEY* ms) {
 void setOutputInt(char * address, int out)  {
       LOSTMONEY dollah;
       int intValue = out;
+      char ipStr[16];
+      get_ID(ipStr);
+
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",i");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",is");
 
       // Add arguments to the OSCMessage using the setter function
 			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message
       size_t encodedLength;
@@ -110,12 +138,15 @@ void setOutputInt(char * address, int out)  {
 
 void setOutputFloat(char * address, float out)  {
       LOSTMONEY dollah;
+      char ipStr[16];
+      get_ID(ipStr);
       float floatValue = out;
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",f");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",fs");
 
       // Add arguments to the OSCMessage using the setter function
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message
       size_t encodedLength;
@@ -134,13 +165,16 @@ void setOutputFloat(char * address, float out)  {
 
 void setOutputString(char * address, char * out)  {
       LOSTMONEY dollah;
+      char ipStr[16];
+      get_ID(ipStr);
       const char* stringValue = out;
 
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",s");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",ss");
 
       // Add arguments to the OSCMessage using the setter function
 			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message
       size_t encodedLength;

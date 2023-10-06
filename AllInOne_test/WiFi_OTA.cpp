@@ -57,6 +57,11 @@ void loop_OTA() {
   ArduinoOTA.handle();
 }
 
+void get_ID(char * ipStr) {
+  IPAddress ip = WiFi.localIP();
+  sprintf(ipStr, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
+}
+
 // ==========================================================
 
 void loop_WiFi() {
@@ -168,5 +173,6 @@ void setup_websocket()  {
 
 	// try ever 5000 again if connection has failed
 	webSocket.setReconnectInterval(1000);
-
 }
+
+
