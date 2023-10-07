@@ -47,3 +47,11 @@ debug.cfg
 *.svd
 *.pcapng
 .vscode/
+hw/BottleNode/.DS_Store
+
+*.log
+
+# macOS stuff
+.DS_Store
+.Thumbnails
+

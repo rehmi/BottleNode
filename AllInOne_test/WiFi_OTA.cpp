@@ -61,10 +61,6 @@ void setup_WiFi() {
   WiFi.mode(WIFI_STA);
 
   WiFiMulti wifiMulti;
-  wifiMulti.addAP("mini0n", "ohmyglob");
-  // wifiMulti.addAP("oni0n", "ohmyglob");
-  // wifiMulti.addAP("unacceptable", "ohmyglob");
-  // wifiMulti.addAP("erPhone13", "ohmyglob");
   // wifiMulti.addAP("*******", "   ò_ô   ");
 
 
