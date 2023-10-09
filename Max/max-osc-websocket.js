@@ -45,7 +45,7 @@ app.listen(PORT_HTTP, () => {
 
 
 maxAPI.addHandler("getips", (args) => {
-	console.log("In getter")
+	console.log(ipAddresses);
     maxAPI.outlet('ids', ipAddresses);
 });
 
@@ -113,8 +113,19 @@ wss.on('connection', (ws, req) => {
 		// console.log(ws._socket.remoteAddress);
 		//message data type is ArrayBuffer
 		const msgParsed = osc.readPacket(message, { metadata: true });
-		console.log(msgParsed)
-		maxAPI.outlet('message', msgParsed);
+
+		if (msgParsed.address == "/max/id") {
+			let ip = msgParsed.args[0]
+			
+			// Add to the array if not already there
+			if (!ipAddresses.includes(ip)) {
+				ipAddresses.push(String(ip));
+			}
+		  } else {
+			maxAPI.outlet('message', msgParsed);
+		}
+
+		// console.log(msgParsed)
 	});
 
 	ws.on("error", (err) => {
@@ -160,7 +171,6 @@ wss.on('connection', (ws, req) => {
 	maxAPI.addHandler("getIdentifier", (...args) => {
 		// console.log("send args: " + args);
 		if (webSocketPort && isConnected) {
-
 			const oscMessage ={
 				address: "/max/id",
 				args: [
