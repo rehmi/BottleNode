@@ -113,12 +113,17 @@ void setOutputInt(char * address, int out)  {
       int intValue = out;
       char ipStr[16];
       get_ID(ipStr);
+      uint64_t mac = ESP.getEfuseMac();
+      uint32_t mactrunc = (uint32_t) mac;
 
+      // Serial.println(mac);
+      // Serial.println(mactrunc);
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",is");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",iis");
 
       // Add arguments to the OSCMessage using the setter function
 			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message
@@ -140,12 +145,15 @@ void setOutputFloat(char * address, float out)  {
       LOSTMONEY dollah;
       char ipStr[16];
       get_ID(ipStr);
+      uint64_t mac = ESP.getEfuseMac();
+      uint32_t mactrunc = (uint32_t) mac;
       float floatValue = out;
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",fs");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",fis");
 
       // Add arguments to the OSCMessage using the setter function
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message
@@ -167,13 +175,16 @@ void setOutputString(char * address, char * out)  {
       LOSTMONEY dollah;
       char ipStr[16];
       get_ID(ipStr);
+      uint64_t mac = ESP.getEfuseMac();
+      uint32_t mactrunc = (uint32_t) mac;
       const char* stringValue = out;
 
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",ss");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",sis");
 
       // Add arguments to the OSCMessage using the setter function
 			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
+      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message

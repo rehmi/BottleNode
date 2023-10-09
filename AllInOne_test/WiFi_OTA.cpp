@@ -141,10 +141,9 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       checkReceive(&penny);
 
       // Just for demonstration
-      // setOutputInt(random(0, 100));
-      setOutputFloat("/max/led", 100.2);
-      setOutputString("/max/led", "hello, max");
-      setOutputInt("/max/led", random(0, 100));
+      // setOutputFloat("/max/led", 100.2);
+      // setOutputString("/max/led", "hello, max");
+      // setOutputInt("/max/led", random(0, 100));
 
 			break;
 	}
