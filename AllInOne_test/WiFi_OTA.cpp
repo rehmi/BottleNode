@@ -7,6 +7,11 @@ WebSocketsClient webSocket;
 
 // ==================================================
 
+IPAddress local_IP(192, 168, 1, 112);
+IPAddress gateway(192, 168, 1, 1);   // Replace this with your gateway IP Addess
+IPAddress subnet(255, 255, 255, 0);  // Replace this with your Subnet Mask
+IPAddress dns(192, 168, 1, 1);   // Replace this with your DNS
+
 void setup_OTA() {
   // Port defaults to 3232
   // ArduinoOTA.setPort(3232);
@@ -69,12 +74,13 @@ void loop_WiFi() {
 
 void setup_WiFi() {
   WiFi.mode(WIFI_STA);
-
   wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
-  // wifiMulti.addAP("oni0n", "ohmyglob");
-  // wifiMulti.addAP("unacceptable", "ohmyglob");
-  // wifiMulti.addAP("erPhone13", "ohmyglob");
-  // wifiMulti.addAP("*******", "   ò_ô   ");
+
+  if (WiFi.config(local_IP, gateway, subnet, dns, dns) == false) {
+    Serial.println("Configuration failed.");
+  }
+
+//  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
   // Wait for connection
   // while (WiFi.status() != WL_CONNECTED) {

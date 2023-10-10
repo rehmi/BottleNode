@@ -142,31 +142,7 @@ wss.on('connection', (ws, req) => {
 	});
 
 
-	// Handle the Max audio URL here...
-	maxAPI.addHandler("sendAudioUrl", (...args) => {
-		// http://localhost:${PORT_HTTP}/music/${args[0]}
-		console.log("send args: " + args);
-		if (webSocketPort && isConnected) {
-
-			const oscMessage ={
-				address: "/max/audio/url",
-				args: [
-					{
-						type: "s",
-						value: `${wifiAddress}:${PORT_HTTP}/music/${args[0]}`,
-					}
-				],
-				
-			};
-			
-			// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
-			const binaryData = osc.writePacket(oscMessage);
-		
-			// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-			broadcast(binaryData);			
-		}
-	});
-
+	
 	// Get identifier for this IP...
 	maxAPI.addHandler("getIdentifier", (...args) => {
 		// console.log("send args: " + args);
@@ -177,6 +153,10 @@ wss.on('connection', (ws, req) => {
 					{
 						type:"i",
 						value:1
+					},
+					{
+						type: "s",
+						value: args[1]
 					}
 				],
 				
@@ -192,9 +172,39 @@ wss.on('connection', (ws, req) => {
 	});
 
 
+	// Handle the Max audio URL here...
+	maxAPI.addHandler("sendAudioUrl", (...args) => {
+		// http://localhost:${PORT_HTTP}/music/${args[0]}
+		// console.log("send args: " + args);
+		if (webSocketPort && isConnected) {
+
+			const oscMessage ={
+				address: "/max/audio/url",
+				args: [
+					{
+						type: "s",
+						value: `${wifiAddress}:${PORT_HTTP}/music/${args[0]}`,
+					},
+					{
+						type: "s",
+						value: args[1]
+					}
+				],
+				
+			};
+			
+			// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+			const binaryData = osc.writePacket(oscMessage);
+		
+			// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+			broadcast(binaryData);			
+		}
+	});
+
+
 	// Handle the Max volume setter here...
 	maxAPI.addHandler("sendAudioVol", (...args) => {
-		//console.log("send args: " + args);
+		// console.log("send args: " + args);
 		if (webSocketPort && isConnected) {
 			const oscMessage = {
 				address: "/max/audio/volume",
@@ -202,6 +212,10 @@ wss.on('connection', (ws, req) => {
 					{
 						type: "i",
 						value: args[0],
+					},
+					{
+						type: "s",
+						value: args[1]
 					}
 				],	
 			}
@@ -217,7 +231,7 @@ wss.on('connection', (ws, req) => {
 
 	// Handle the Max LED brightness here...
 	maxAPI.addHandler("sendBrightness", (...args) => {
-		//console.log("send args: " + args);
+		// console.log("send args: " + args);
 		if (webSocketPort && isConnected) {
 
 		const oscMessage = {
@@ -226,6 +240,10 @@ wss.on('connection', (ws, req) => {
 				{
 					type: "i",
 					value: args[0],
+				},
+				{
+					type: "s",
+					value: args[1]
 				}
 			],
 			
@@ -242,7 +260,7 @@ wss.on('connection', (ws, req) => {
 
 	// Handle the Max LED color here...
 	maxAPI.addHandler("sendColor", (...args) => {
-		console.log("send args: " + args);
+		// console.log("send args: " + args);
 		if (webSocketPort && isConnected) {
 
 			const oscMessage = {
@@ -259,6 +277,10 @@ wss.on('connection', (ws, req) => {
 					{
 						type: "i",
 						value: args[2],
+					},
+					{
+						type: "s",
+						value: args[3]
 					}
 				],
 				
