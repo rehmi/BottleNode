@@ -124,7 +124,7 @@ void setup_audio(void)
 void loop_audio(void)
 {
     // Set thevolume (0-100)
-    audio.setVolume(min(6, (int)(touchfactor *  12)));
+    // audio.setVolume(min(6, (int)(touchfactor *  12)));
 
     // Run audio player
     audio.loop();

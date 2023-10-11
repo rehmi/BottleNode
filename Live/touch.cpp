@@ -36,4 +36,5 @@ void loop_touch(void) {
 
 void send_touch(void) {
   setOutputFloat("/max/touch", touchfactor);
+  Serial.println(touchfactor);
 }

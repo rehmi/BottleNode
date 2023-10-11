@@ -190,6 +190,8 @@ wss.on('connection', (ws, req) => {
 					],
 					
 				};
+
+				console.log("OSC Struct: " + oscMessage);
 				
 				// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
 				const binaryData = osc.writePacket(oscMessage);

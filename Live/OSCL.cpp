@@ -95,6 +95,8 @@ void identify(OSCMessage &msg, int patternOffset)  {
 }
 
 void checkReceive(struct GOTMONEY* ms) {
+  char ipStr[16]; // Buffer to store the IP string
+  get_ID(ipStr);
   uint8_t * payload = ms->value;
   OSCMessage msg;  
   int size = ms->size;
@@ -108,9 +110,9 @@ void checkReceive(struct GOTMONEY* ms) {
         int dlen=msg.getDataLength(msg.size()-1);
         char str[dlen];
         msg.getString(msg.size()-1, str, dlen);
-
+        
         // Check if ip address matches this node
-        if (strcmp(str, get_IP()) == 0) {
+        if (strcmp(str, ipStr) == 0) {
           msg.route("/max/led", led); // Sends data to function
           msg.route("/max/audio", audio); // Sends data to function
           msg.route("/max/id", identify); // Sends data to function

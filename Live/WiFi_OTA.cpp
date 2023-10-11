@@ -75,28 +75,13 @@ void loop_WiFi() {
 }
 
 void setup_WiFi() {
-  // Setup Wifi using the values defined in secrets.h and parsing them
-  int parsedIP[MAX_SEGMENTS];
-  int parsedGate[MAX_SEGMENTS];
-  int parsedSub[MAX_SEGMENTS];
-  int parsedDns[MAX_SEGMENTS];
-
-  parseIpAddress(IP_NODE, parsedIP);
-  parseIpAddress(GATEWAY_NODE, parsedGate);
-  parseIpAddress(SUBNET_NODE, parsedSub);
-  parseIpAddress(DNS_NODE, parsedDns);
-
-  IPAddress local_IP(parsedIP[0], parsedIP[1], parsedIP[2], parsedIP[3]);
-  IPAddress gateway(parsedGate[0], parsedGate[1], parsedGate[2], parsedGate[3]);   // Replace this with your gateway IP Addess
-  IPAddress subnet(parsedSub[0], parsedSub[1], parsedSub[2], parsedSub[3]);  // Replace this with your Subnet Mask
-  IPAddress dns(parsedDns[0], parsedDns[1], parsedDns[2], parsedDns[3]);   // Replace this with your DNS
-
+  
   WiFi.mode(WIFI_STA);
   wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
 
-  if (WiFi.config(local_IP, gateway, subnet, dns, dns) == false) {
-    Serial.println("Configuration failed.");
-  }
+  // if (WiFi.config(local_IP, gateway, subnet, dns, dns) == false) {
+  //   Serial.println("Configuration failed.");
+  // }
 
 //  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
@@ -214,8 +199,12 @@ void parseIpAddress(const char *ip, int output[MAX_SEGMENTS]) {
     }
 }
 
-const char * get_IP() {
-  return IP_NODE;
-}
+// const char * get_IP() {
+//   char * ipStr;
+//   * ipStr = WiFi.localIP();
+//   // sprintf(ipStr, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
+//   Serial.println(ipStr);
+//   return ipStr;
+// }
 
 
