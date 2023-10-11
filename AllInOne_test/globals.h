@@ -10,6 +10,7 @@
 #include <OSCMLite.h>
 
 #define USE_SERIAL Serial
+#define MAX_SEGMENTS 4
 
 
 // Fix LED defns for the XIAO_ESP32S3
@@ -58,6 +59,9 @@ extern void loop_LEDS(void);
 extern void loop_touch(void);
 extern void loop_audio(void);
 
+// For Touch 
+extern void send_touch(void);
+
 // For communications 
 extern void sendBacktoHost(uint8_t *encodedMessage, size_t encodedLength);
 extern void checkReceive(struct GOTMONEY* ms);
@@ -76,6 +80,8 @@ extern void set_audio_volume(uint8_t * in);
 
 // For WIFI
 extern void get_ID(char * id);
+extern void parseIpAddress(const char *ip, int output[MAX_SEGMENTS]);
+extern const char * get_IP();
 
 struct GOTMONEY {
     uint8_t * value;

@@ -5,11 +5,11 @@
 #include <OSCMessage.h>
 #include <OSCTiming.h>
 #include <SLIPEncodedSerial.h>
-// #include <OSCMLite.h>
 
 // #include <SLIPEncodedUSBSerial.h>
 
 #include "globals.h"
+// #include "secrets.h"
 
 // ==============================================
 OSCErrorCode error;
@@ -63,6 +63,14 @@ void audio(OSCMessage &msg, int patternOffset) {
   }
 }
 
+void touch(OSCMessage &msg, int patternOffset) {
+  if(msg.match("/max/touch/get")){
+    send_touch();
+  } else {
+    Serial.print("No Matching touch Codes! \n");
+  }
+}
+
 void identify(OSCMessage &msg, int patternOffset)  {
       LOSTMONEY dollah;
       char ipStr[16];
@@ -96,9 +104,25 @@ void checkReceive(struct GOTMONEY* ms) {
         msg.fill(payload[length-size-1]);
       }
     if (!msg.hasError()) {
-      msg.route("/max/led", led); // Sends data to function
-      msg.route("/max/audio", audio); // Sends data to function
-      msg.route("/max/id", identify); // Sends data to function
+      if (msg.isString(msg.size()-1)) {
+        int dlen=msg.getDataLength(msg.size()-1);
+        char str[dlen];
+        msg.getString(msg.size()-1, str, dlen);
+
+        // Check if ip address matches this node
+        if (strcmp(str, get_IP()) == 0) {
+          msg.route("/max/led", led); // Sends data to function
+          msg.route("/max/audio", audio); // Sends data to function
+          msg.route("/max/id", identify); // Sends data to function
+          msg.route("/max/touch", touch); // Sends data to function
+        } else if (strcmp(str, "broadcast") == 0) {
+          msg.route("/max/led", led); // Sends data to function
+          msg.route("/max/audio", audio); // Sends data to function
+          msg.route("/max/id", identify); // Sends data to function
+          msg.route("/max/touch", touch); // Sends data to function
+        }
+
+      }
     } 
     else {
       error = msg.getError();
@@ -116,14 +140,12 @@ void setOutputInt(char * address, int out)  {
       uint64_t mac = ESP.getEfuseMac();
       uint32_t mactrunc = (uint32_t) mac;
 
-      // Serial.println(mac);
-      // Serial.println(mactrunc);
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",iis");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",is");
 
       // Add arguments to the OSCMessage using the setter function
 			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &intValue, sizeof(int32_t));
-      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
+      // oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message
@@ -149,11 +171,11 @@ void setOutputFloat(char * address, float out)  {
       uint32_t mactrunc = (uint32_t) mac;
       float floatValue = out;
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",fis");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",fs");
 
       // Add arguments to the OSCMessage using the setter function
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_FLOAT32, &floatValue, sizeof(float));
-      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
+      // oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message
@@ -180,11 +202,11 @@ void setOutputString(char * address, char * out)  {
       const char* stringValue = out;
 
       // Create an OSCMessage object using the constructor-like function
-      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",sis");
+      OSCMLite* oscMsg = oscm.createOSCMessage(address, ",ss");
 
       // Add arguments to the OSCMessage using the setter function
 			oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)stringValue, strlen(stringValue) + 1); // +1 for null terminator
-      oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
+      // oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_INT32, &mactrunc, sizeof(int32_t));
       oscm.addOSCArgument(oscMsg, oscm.OSC_TYPE_STRING, (void*)ipStr, strlen(ipStr) + 1); // +1 for null terminator
 
       // Encode the OSC message

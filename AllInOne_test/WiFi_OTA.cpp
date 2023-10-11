@@ -6,11 +6,13 @@ WebSocketsClient webSocket;
 // OSCMLite oscm;
 
 // ==================================================
-
-IPAddress local_IP(192, 168, 1, 112);
-IPAddress gateway(192, 168, 1, 1);   // Replace this with your gateway IP Addess
-IPAddress subnet(255, 255, 255, 0);  // Replace this with your Subnet Mask
-IPAddress dns(192, 168, 1, 1);   // Replace this with your DNS
+// // Setup Wifi 
+// int parsed[MAX_SEGMENTS];
+// parseIpAddress(IP_NODE, parsed);
+// IPAddress local_IP(parsed[0], parsed[1], parsed[2], parsed[3]);
+// IPAddress gateway(192, 168, 1, 1);   // Replace this with your gateway IP Addess
+// IPAddress subnet(255, 255, 255, 0);  // Replace this with your Subnet Mask
+// IPAddress dns(192, 168, 1, 1);   // Replace this with your DNS
 
 void setup_OTA() {
   // Port defaults to 3232
@@ -73,6 +75,22 @@ void loop_WiFi() {
 }
 
 void setup_WiFi() {
+  // Setup Wifi using the values defined in secrets.h and parsing them
+  int parsedIP[MAX_SEGMENTS];
+  int parsedGate[MAX_SEGMENTS];
+  int parsedSub[MAX_SEGMENTS];
+  int parsedDns[MAX_SEGMENTS];
+
+  parseIpAddress(IP_NODE, parsedIP);
+  parseIpAddress(GATEWAY_NODE, parsedGate);
+  parseIpAddress(SUBNET_NODE, parsedSub);
+  parseIpAddress(DNS_NODE, parsedDns);
+
+  IPAddress local_IP(parsedIP[0], parsedIP[1], parsedIP[2], parsedIP[3]);
+  IPAddress gateway(parsedGate[0], parsedGate[1], parsedGate[2], parsedGate[3]);   // Replace this with your gateway IP Addess
+  IPAddress subnet(parsedSub[0], parsedSub[1], parsedSub[2], parsedSub[3]);  // Replace this with your Subnet Mask
+  IPAddress dns(parsedDns[0], parsedDns[1], parsedDns[2], parsedDns[3]);   // Replace this with your DNS
+
   WiFi.mode(WIFI_STA);
   wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
 
@@ -178,6 +196,26 @@ void setup_websocket()  {
 
 	// try ever 5000 again if connection has failed
 	webSocket.setReconnectInterval(1000);
+}
+
+void parseIpAddress(const char *ip, int output[MAX_SEGMENTS]) {
+    // Making a copy of the input string because strtok modifies the input string
+    char ipCopy[16];  // 15 characters for IP + null terminator
+    strncpy(ipCopy, ip, sizeof(ipCopy));
+    ipCopy[sizeof(ipCopy) - 1] = '\0';  // Ensure null termination
+
+    char *token = strtok(ipCopy, ".");
+    int i = 0;
+
+    while (token != NULL && i < MAX_SEGMENTS) {
+        output[i] = atoi(token);
+        token = strtok(NULL, ".");
+        i++;
+    }
+}
+
+const char * get_IP() {
+  return IP_NODE;
 }
 
 

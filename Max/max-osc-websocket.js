@@ -113,6 +113,41 @@ wss.on('connection', (ws, req) => {
 		// console.log(ws._socket.remoteAddress);
 		//message data type is ArrayBuffer
 		const msgParsed = osc.readPacket(message, { metadata: true });
+		var address = msgParsed.address;
+
+		// Make a switch case for the different OSC addresses
+		switch (address) {
+			case "/max/id":
+				let ip = msgParsed.args[0]
+				// Add to the array if not already there
+				if (!ipAddresses.includes(ip)) {
+					ipAddresses.push(String(ip));
+				}
+				break;
+			case "/max/touch":
+				var str = msgParsed.args[1].value;
+				var parts = str.split(".");
+				// Check the ip address contained in the second argument and send the touchfactor to the correct client
+				if (ipAddresses.includes(msgParsed.args[1].value)) {
+					maxAPI.outlet('touch'+parts[parts.length - 1], msgParsed.args[0].value);
+				}
+				// maxAPI.outlet('touch', msgParsed.args[0].value, msgParsed.args[1].value);
+			case "/max/led/brightness":
+				maxAPI.outlet('brightness', msgParsed.args[0].value);
+				break;
+			case "/max/led/color":
+				maxAPI.outlet('color', msgParsed.args[0].value, msgParsed.args[1].value, msgParsed.args[2].value);
+				break;
+			case "/max/audio/url":
+				maxAPI.outlet('audioUrl', msgParsed.args[0].value);
+				break;
+			case "/max/audio/volume":
+				maxAPI.outlet('audioVol', msgParsed.args[0].value);
+				break;
+			
+			default:
+				break;
+		}
 
 		if (msgParsed.address == "/max/id") {
 			let ip = msgParsed.args[0]
@@ -124,7 +159,6 @@ wss.on('connection', (ws, req) => {
 		  } else {
 			maxAPI.outlet('message', msgParsed);
 		}
-
 		// console.log(msgParsed)
 	});
 
@@ -142,6 +176,29 @@ wss.on('connection', (ws, req) => {
 	});
 
 
+		// Get touchfactor for this IP...
+		maxAPI.addHandler("getTouchfactor", (...args) => {
+			console.log("send args: " + args);
+			if (webSocketPort && isConnected) {
+				const oscMessage ={
+					address: "/max/touch/get",
+					args: [
+						{
+							type: "s",
+							value: args[0]
+						}
+					],
+					
+				};
+				
+				// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+				const binaryData = osc.writePacket(oscMessage);
+			
+				// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+				broadcast(binaryData);
+		}
+	
+		});
 	
 	// Get identifier for this IP...
 	maxAPI.addHandler("getIdentifier", (...args) => {
@@ -231,7 +288,7 @@ wss.on('connection', (ws, req) => {
 
 	// Handle the Max LED brightness here...
 	maxAPI.addHandler("sendBrightness", (...args) => {
-		// console.log("send args: " + args);
+		console.log("send args: " + args);
 		if (webSocketPort && isConnected) {
 
 		const oscMessage = {

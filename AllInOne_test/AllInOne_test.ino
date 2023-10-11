@@ -9,8 +9,8 @@ void setup() {
   setup_LEDS();
   Serial.println("[Starting capacitive sensing]");
   setup_touch();
-  Serial.println("[Starting I2S speaker and microphone]");
-  setup_I2S();
+  // Serial.println("[Starting I2S speaker and microphone]");
+  // setup_I2S(); // Keep commented if using loop_audio()
   Serial.println("[Starting WiFi]");
   setup_WiFi();
   Serial.println("[Starting Websocket connection (client)]");
@@ -28,9 +28,9 @@ void setup() {
 }
 
 void loop() {
-  // loop_touch();
+  loop_touch();
   // loop_LEDS();
-  loop_I2S();
+  // loop_I2S(); // Keep commented if using loop_audio()
   loop_WiFi();
   loop_websocket();
   // loop_OTA();

@@ -33,3 +33,7 @@ void loop_touch(void) {
   //   if (Serial)
   //   	Serial.printf("raw:%d\tmin:%d \tmax:%d\ttouch:%d \tspan:%d\tfactor:%f\n", raw_touch, raw_min, raw_max, touch, span, touchfactor);
 }
+
+void send_touch(void) {
+  setOutputFloat("/max/touch", touchfactor);
+}
