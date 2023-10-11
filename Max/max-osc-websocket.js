@@ -15,7 +15,7 @@ const os = require('os');
 // Get wifi address for local server
 const networkInterfaces = os.networkInterfaces();
 const wifiInterface = networkInterfaces['Wi-Fi'];
-console.log(wifiInterface);
+// console.log(wifiInterface);
 const wifiAddress = wifiInterface[3].address;
 
 // Define the ports to be used for the HTTP and Websocket servers
@@ -178,7 +178,7 @@ wss.on('connection', (ws, req) => {
 
 		// Get touchfactor for this IP...
 		maxAPI.addHandler("getTouchfactor", (...args) => {
-			console.log("send args: " + args);
+			// console.log("send args: " + args);
 			if (webSocketPort && isConnected) {
 				const oscMessage ={
 					address: "/max/touch/get",
@@ -234,8 +234,8 @@ wss.on('connection', (ws, req) => {
 	// Handle the Max audio URL here...
 	maxAPI.addHandler("sendAudioUrl", (...args) => {
 		// http://localhost:${PORT_HTTP}/music/${args[0]}
-		console.log("WIFI:");
-		console.log(wifiAddress);
+		// console.log("WIFI:");
+		// console.log(wifiAddress);
 		if (webSocketPort && isConnected) {
 
 			const oscMessage ={
