@@ -121,8 +121,8 @@ void setup_LEDS(void) {
   LED_chain.setPixel(0, 0x80c0c0, 0);  // set initial colors
   LED_chain.setPixel(1, 0x80c0ff, 0);
   LED_chain.setPixel(2, 0x40c0ff, 0);
-  LED_chain.setPixel(3, 0x00c0ff, 0);
-  LED_chain.setPixel(4, 0x0080ff, 1);  // update (show) the chain
+  LED_chain.setPixel(3, 0x0080ff, 0);
+  LED_chain.setPixel(4, 0x0000ff, 1);  // update (show) the chain
 #endif                                 // USE_LiteLED
 
 #if USE_WS2812FX
