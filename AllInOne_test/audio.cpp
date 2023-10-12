@@ -76,13 +76,13 @@ void setup_audio(void)
     char URL[] =
         // "http://stream.klassikradio.de/purebach/mp3-128/www.klassikradio.de/";
         // "http://ice1.somafm.com/deepspaceone-64-aac";
-        "http://ice1.somafm.com/dronezone-128-mp3";
+        // "http://ice1.somafm.com/dronezone-128-mp3";
+        "https://ice4.somafm.com/dronezone-32-aac";
         // "http://ice1.somafm.com/cliqhop-128-aac";
-    // "http://38.96.148.28:8342/stream";
+        // "http://38.96.148.28:8342/stream";
 
-    //  *** radio streams ***
-    while (!audio.connecttohost(URL))
-        ;
+        //  *** radio streams ***
+        while (!audio.connecttohost(URL));
 
     //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
     //  audio.connecttohost("http://mcrscast.mcr.iol.pt/cidadefm");                                         // mp3
