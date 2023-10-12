@@ -29,10 +29,8 @@ void setup() {
 void loop() {
   loop_touch();
   // loop_LEDS();
-  // loop_I2S(); // Keep commented if using loop_audio()
   loop_WiFi();
   loop_websocket();
-  // loop_OTA();
-  // loop_OSC();
+  loop_OTA();
   loop_audio();
 }

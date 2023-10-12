@@ -62,6 +62,12 @@ void set_audio_volume(uint8_t * in) {
     audio.setVolume(*in);
 }
 
+void stop_audio(void) {
+    if (audio.isRunning())  {
+      audio.stopSong();
+    }
+}
+
 void setup_audio(void)
 {
     digitalWrite(SPKR_POWER, 0);
@@ -88,7 +94,7 @@ void setup_audio(void)
     char URL[] =
         // "http://stream.klassikradio.de/purebach/mp3-128/www.klassikradio.de/";
         // "http://ice1.somafm.com/deepspaceone-64-aac";
-        "http://ice1.somafm.com/cliqhop-128-aac";
+        "http://ice1.somafm.com/dronezone-128-mp3";
     // "http://38.96.148.28:8342/stream";
 
     //  *** radio streams ***

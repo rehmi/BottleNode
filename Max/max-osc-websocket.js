@@ -15,7 +15,7 @@ const os = require('os');
 // Get wifi address for local server
 const networkInterfaces = os.networkInterfaces();
 const wifiInterface = networkInterfaces['Wi-Fi'];
-// console.log(wifiInterface);
+console.log(networkInterfaces);
 const wifiAddress = wifiInterface[3].address;
 
 // Define the ports to be used for the HTTP and Websocket servers
@@ -261,6 +261,36 @@ wss.on('connection', (ws, req) => {
 		}
 	});
 
+	// Handle the Max audio URL here...
+	maxAPI.addHandler("sendAudioHttp", (...args) => {
+		// http://localhost:${PORT_HTTP}/music/${args[0]}
+		// console.log("WIFI:");
+		// console.log(wifiAddress);
+		if (webSocketPort && isConnected) {
+
+			const oscMessage ={
+				address: "/max/audio/http",
+				args: [
+					{
+						type: "s",
+						value: args[0],
+					},
+					{
+						type: "s",
+						value: args[1]
+					}
+				],
+				
+			};
+			
+			// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+			const binaryData = osc.writePacket(oscMessage);
+		
+			// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+			broadcast(binaryData);			
+		}
+	});
+
 
 	// Handle the Max volume setter here...
 	maxAPI.addHandler("sendAudioVol", (...args) => {
@@ -276,6 +306,30 @@ wss.on('connection', (ws, req) => {
 					{
 						type: "s",
 						value: args[1]
+					}
+				],	
+			}
+
+		// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+		const binaryData = osc.writePacket(oscMessage);
+	
+		// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+		broadcast(binaryData);
+		}
+	});
+
+
+	
+	// Handle the Max volume setter here...
+	maxAPI.addHandler("sendAudioStop", (...args) => {
+		console.log("send args: " + args);
+		if (webSocketPort && isConnected) {
+			const oscMessage = {
+				address: "/max/audio/stop",
+				args: [
+					{
+						type: "s",
+						value: args[0],
 					}
 				],	
 			}

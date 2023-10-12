@@ -76,22 +76,22 @@ int scale_output(int v) {
 
 
 void setup_I2S(void) {
-  digitalWrite(SPKR_POWER, 0);
-  gpio_set_drive_capability(SPKR_POWER, GPIO_DRIVE_CAP_3);
-  pinMode(SPKR_POWER, OUTPUT);
-  digitalWrite(SPKR_POWER, 1);
+  // digitalWrite(SPKR_POWER, 0);
+  // gpio_set_drive_capability(SPKR_POWER, GPIO_DRIVE_CAP_3);
+  // pinMode(SPKR_POWER, OUTPUT);
+  // digitalWrite(SPKR_POWER, 1);
 
   pinMode(i2s_mic_pins.data_in_num, INPUT_PULLDOWN);
 
-  i2s_driver_install(i2s_spkr, &i2s_spkr_config, 0, NULL);
-  i2s_set_pin(i2s_spkr, &i2s_spkr_pins);
+  // i2s_driver_install(i2s_spkr, &i2s_spkr_config, 0, NULL);
+  // i2s_set_pin(i2s_spkr, &i2s_spkr_pins);
 
   i2s_driver_install(i2s_mic, &i2s_mic_config, 0, NULL);
   i2s_set_pin(i2s_mic, &i2s_mic_pins);
 
-  gpio_set_drive_capability(SPKR_BCLK, GPIO_DRIVE_CAP_3);
-  gpio_set_drive_capability(SPKR_LRC, GPIO_DRIVE_CAP_3);
-  gpio_set_drive_capability(SPKR_DIN, GPIO_DRIVE_CAP_3);
+  // gpio_set_drive_capability(SPKR_BCLK, GPIO_DRIVE_CAP_3);
+  // gpio_set_drive_capability(SPKR_LRC, GPIO_DRIVE_CAP_3);
+  // gpio_set_drive_capability(SPKR_DIN, GPIO_DRIVE_CAP_3);
 }
 
 void loop_I2S(void) {
@@ -110,17 +110,17 @@ void loop_I2S(void) {
     }
 
     // if (digitalRead(OUTPUT_ENABLE_PIN))
-    i2s_write(i2s_spkr, buf, bytes_read, &bytes_written, portMAX_DELAY);
+    // i2s_write(i2s_spkr, buf, bytes_read, &bytes_written, portMAX_DELAY);
   }
 
-#ifdef MAX98357_RESET_HACK
-  // XXX hack -- cut MAX98357 power every so often in case it has locked its output
-  static unsigned long last_spkr_reset = 0;
-  if ((millis() - last_spkr_reset) > 100) {
-    digitalWrite(SPKR_POWER, 0);
-    delayMicroseconds(10);
-    digitalWrite(SPKR_POWER, 1);
-    last_spkr_reset = millis();
-  }
-#endif
+// #ifdef MAX98357_RESET_HACK
+//   // XXX hack -- cut MAX98357 power every so often in case it has locked its output
+//   static unsigned long last_spkr_reset = 0;
+//   if ((millis() - last_spkr_reset) > 100) {
+//     digitalWrite(SPKR_POWER, 0);
+//     delayMicroseconds(10);
+//     digitalWrite(SPKR_POWER, 1);
+//     last_spkr_reset = millis();
+//   }
+// #endif
 }
