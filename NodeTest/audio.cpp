@@ -1,5 +1,39 @@
 #include "globals.h"
 
+#include "FS.h"
+#include "SPIFFS.h"
+
+void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
+    Serial.printf("Listing directory: %s\r\n", dirname);
+
+    File root = fs.open(dirname);
+    if(!root){
+        Serial.println("- failed to open directory");
+        return;
+    }
+    if(!root.isDirectory()){
+        Serial.println(" - not a directory");
+        return;
+    }
+
+    File file = root.openNextFile();
+    while(file){
+        if(file.isDirectory()){
+            Serial.print("  DIR : ");
+            Serial.println(file.name());
+            if(levels){
+                listDir(fs, file.path(), levels -1);
+            }
+        } else {
+            Serial.print("  FILE: ");
+            Serial.print(file.name());
+            Serial.print("\tSIZE: ");
+            Serial.println(file.size());
+        }
+        file = root.openNextFile();
+    }
+}
+
 // Audio status functions
 
 void audio_info(const char *info) {
@@ -81,8 +115,21 @@ void setup_audio(void)
         // "http://ice1.somafm.com/cliqhop-128-aac";
         // "http://38.96.148.28:8342/stream";
 
-        //  *** radio streams ***
-        while (!audio.connecttohost(URL));
+    Serial.begin(115200);
+    
+#define FORMAT_SPIFFS_IF_FAILED true
+
+    if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)){
+        Serial.println("SPIFFS Mount Failed");
+        return;
+    }
+    
+    listDir(SPIFFS, "/", 0);
+
+    audio.connecttoFS(SPIFFS, "/default.aac"); // SPIFFS
+
+    //  *** radio streams ***
+//    while (!audio.connecttohost(URL));
 
     //  audio.connecttohost("http://stream.antennethueringen.de/live/aac-64/stream.antennethueringen.de/"); // aac
     //  audio.connecttohost("http://mcrscast.mcr.iol.pt/cidadefm");                                         // mp3
