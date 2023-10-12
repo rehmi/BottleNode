@@ -15,7 +15,7 @@ const os = require('os');
 // Get wifi address for local server
 const networkInterfaces = os.networkInterfaces();
 const wifiInterface = networkInterfaces['Wi-Fi'];
-console.log(networkInterfaces);
+// console.log(networkInterfaces);
 const wifiAddress = wifiInterface[3].address;
 
 // Define the ports to be used for the HTTP and Websocket servers
@@ -55,15 +55,30 @@ maxAPI.addHandler("getips", (args) => {
  * music server, so make sure to set the port properly in the ESP32 code.
  */
 const wss = new webSocket.Server({ port: PORT_WS });
+
 let webSocketPort;
+// Associative array to store websockets by IP
+let clients = {};
 
 function broadcast(data) {
-    wss.clients.forEach((client) => {
-		client.send(data);
-        // if (client.readyState === WebSocket.OPEN) {
-        //     client.send(data);
-        // }
-    });
+	console.log("got here")
+	ipAddresses.forEach(item => sendMessageToIP(item, data));
+
+    // wss.clients.forEach((client) => {
+	// 	client.send(data);
+    //     // if (client.readyState === WebSocket.OPEN) {
+    //     //     client.send(data);
+    //     // }
+    // });
+}
+
+function sendMessageToIP(ip, message) {
+    const client = clients[ip];
+    if (client) {
+        client.send(message);
+    } else {
+        console.log(`Client with IP ${ip} not found`);
+    }
 }
 
 wss.on('connection', (ws, req) => {
@@ -80,6 +95,9 @@ wss.on('connection', (ws, req) => {
     if (!ipAddresses.includes(ip)) {
         ipAddresses.push(String(ip));
     }
+
+	// Store the websocket connection using the IP as a key
+    clients[ip] = ws;
 
 	console.log("connection");
 	console.log(ipAddresses);
@@ -167,7 +185,7 @@ wss.on('connection', (ws, req) => {
 	})
 
 	ws.on("close", function stop() {
-		maxAPI.removeHandlers("sendBrightness", "sendColor", "sendAudioUrl", "sendAudioVol", "getIdentifier");
+		maxAPI.removeHandlers("sendBrightness", "sendColor", "sendAudioUrl", "sendAudioVol", "getIdentifier", "sendAudioHttp", "getTouchfactor");
 		console.log("Connection closed");
 
 		ws.terminate();
@@ -175,181 +193,155 @@ wss.on('connection', (ws, req) => {
 		isConnected = false;
 	});
 
+});
 
-		// Get touchfactor for this IP...
-		maxAPI.addHandler("getTouchfactor", (...args) => {
-			// console.log("send args: " + args);
-			if (webSocketPort && isConnected) {
-				const oscMessage ={
-					address: "/max/touch/get",
-					args: [
-						{
-							type: "s",
-							value: args[0]
-						}
-					],
-					
-				};
+// Get touchfactor for this IP...
+maxAPI.addHandler("getTouchfactor", (...args) => {
+	// console.log("send args: " + args);
+	// if (webSocketPort && isConnected) {
+		const oscMessage ={
+			address: "/max/touch/get",
+			args: [
+				{
+					type: "s",
+					value: args[0]
+				}
+			],
+			
+		};
 
-				console.log("OSC Struct: " + oscMessage);
-				
-				// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
-				const binaryData = osc.writePacket(oscMessage);
-			
-				// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-				broadcast(binaryData);
-		}
-	
-		});
-	
-	// Get identifier for this IP...
-	maxAPI.addHandler("getIdentifier", (...args) => {
-		// console.log("send args: " + args);
-		if (webSocketPort && isConnected) {
-			const oscMessage ={
-				address: "/max/id",
-				args: [
-					{
-						type:"i",
-						value:1
-					},
-					{
-						type: "s",
-						value: args[1]
-					}
-				],
-				
-			};
-			
-			// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
-			const binaryData = osc.writePacket(oscMessage);
+		console.log("OSC Struct: " + oscMessage);
 		
-			// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-			broadcast(binaryData);
+		// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+		const binaryData = osc.writePacket(oscMessage);
+	
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[0] === "broadcast") {
+		console.log("Broadcast")
+		broadcast(binaryData);			
+	} else {
+		console.log("To IP")
+		console.log(args[0]);
+		sendMessageToIP(args[0], binaryData);
 	}
+// }
 
-	});
+});
 
-
-	// Handle the Max audio URL here...
-	maxAPI.addHandler("sendAudioUrl", (...args) => {
-		// http://localhost:${PORT_HTTP}/music/${args[0]}
-		// console.log("WIFI:");
-		// console.log(wifiAddress);
-		if (webSocketPort && isConnected) {
-
-			const oscMessage ={
-				address: "/max/audio/url",
-				args: [
-					{
-						type: "s",
-						value: `${wifiAddress}:${PORT_HTTP}/music/${args[0]}`,
-					},
-					{
-						type: "s",
-						value: args[1]
-					}
-				],
-				
-			};
+// Get identifier for this IP...
+maxAPI.addHandler("getIdentifier", (...args) => {
+	// console.log("send args: " + args);
+	// if (webSocketPort && isConnected) {
+		const oscMessage ={
+			address: "/max/id",
+			args: [
+				{
+					type:"i",
+					value:1
+				},
+				{
+					type: "s",
+					value: args[1]
+				}
+			],
 			
-			// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
-			const binaryData = osc.writePacket(oscMessage);
+		};
 		
-			// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-			broadcast(binaryData);			
-		}
-	});
-
-	// Handle the Max audio URL here...
-	maxAPI.addHandler("sendAudioHttp", (...args) => {
-		// http://localhost:${PORT_HTTP}/music/${args[0]}
-		// console.log("WIFI:");
-		// console.log(wifiAddress);
-		if (webSocketPort && isConnected) {
-
-			const oscMessage ={
-				address: "/max/audio/http",
-				args: [
-					{
-						type: "s",
-						value: args[0],
-					},
-					{
-						type: "s",
-						value: args[1]
-					}
-				],
-				
-			};
-			
-			// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
-			const binaryData = osc.writePacket(oscMessage);
-		
-			// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-			broadcast(binaryData);			
-		}
-	});
-
-
-	// Handle the Max volume setter here...
-	maxAPI.addHandler("sendAudioVol", (...args) => {
-		// console.log("send args: " + args);
-		if (webSocketPort && isConnected) {
-			const oscMessage = {
-				address: "/max/audio/volume",
-				args: [
-					{
-						type: "i",
-						value: args[0],
-					},
-					{
-						type: "s",
-						value: args[1]
-					}
-				],	
-			}
-
 		// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
 		const binaryData = osc.writePacket(oscMessage);
 	
-		// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-		broadcast(binaryData);
-		}
-	});
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[1] === "broadcast") {
+		console.log("Broadcast")
+		broadcast(binaryData);			
+	} else {
+		console.log("To IP")
+		console.log(args[1]);
+		sendMessageToIP(args[1], binaryData);
+	}
+// }
+
+});
 
 
-	
-	// Handle the Max volume setter here...
-	maxAPI.addHandler("sendAudioStop", (...args) => {
-		console.log("send args: " + args);
-		if (webSocketPort && isConnected) {
-			const oscMessage = {
-				address: "/max/audio/stop",
-				args: [
-					{
-						type: "s",
-						value: args[0],
-					}
-				],	
-			}
+// Handle the Max audio URL here...
+maxAPI.addHandler("sendAudioUrl", (...args) => {
+	// http://localhost:${PORT_HTTP}/music/${args[0]}
+	// console.log("WIFI:");
+	console.log("Inside sendAudioUrl");
+	// if (webSocketPort && isConnected) {
 
+		const oscMessage ={
+			address: "/max/audio/url",
+			args: [
+				{
+					type: "s",
+					value: `${wifiAddress}:${PORT_HTTP}/music/${args[0]}`,
+				},
+				{
+					type: "s",
+					value: args[1]
+				}
+			],
+			
+		};
+		
 		// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+		console.log("Right before write packet sendAudioUrl");
 		const binaryData = osc.writePacket(oscMessage);
 	
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[1] === "broadcast") {
+		broadcast(binaryData);			
+	} else {
+		sendMessageToIP(args[1], binaryData);
+	}		
+	// }
+});
+
+// Handle the Max audio URL here...
+maxAPI.addHandler("sendAudioHttp", (...args) => {
+	// http://localhost:${PORT_HTTP}/music/${args[0]}
+	// console.log("WIFI:");
+	// console.log(wifiAddress);
+	// if (webSocketPort && isConnected) {
+
+		const oscMessage ={
+			address: "/max/audio/http",
+			args: [
+				{
+					type: "s",
+					value: args[0],
+				},
+				{
+					type: "s",
+					value: args[1]
+				}
+			],
+			
+		};
+		
+		// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+		const binaryData = osc.writePacket(oscMessage);
+		
+
 		// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-		broadcast(binaryData);
+		if (args[1] === "broadcast") {
+			broadcast(binaryData);			
+		} else {
+			sendMessageToIP(args[1], binaryData);
 		}
-	});
+	
+	// }
+});
 
 
-	// Handle the Max LED brightness here...
-	maxAPI.addHandler("sendBrightness", (...args) => {
-		console.log("send args: " + args);
-		if (webSocketPort && isConnected) {
-
+// Handle the Max volume setter here...
+maxAPI.addHandler("sendAudioVol", (...args) => {
+	// console.log("send args: " + args);
+	// if (webSocketPort && isConnected) {
 		const oscMessage = {
-			address: "/max/led/brightness",
+			address: "/max/audio/volume",
 			args: [
 				{
 					type: "i",
@@ -359,6 +351,108 @@ wss.on('connection', (ws, req) => {
 					type: "s",
 					value: args[1]
 				}
+			],	
+		}
+
+	// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+	const binaryData = osc.writePacket(oscMessage);
+	
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[1] === "broadcast") {
+		broadcast(binaryData);			
+	} else {
+		sendMessageToIP(args[1], binaryData);
+	}
+	// }
+});
+
+
+
+// Handle the Max volume setter here...
+maxAPI.addHandler("sendAudioStop", (...args) => {
+	console.log("send args: " + args);
+	// if (webSocketPort && isConnected) {
+		const oscMessage = {
+			address: "/max/audio/stop",
+			args: [
+				{
+					type: "s",
+					value: args[0],
+				}
+			],	
+		}
+
+	// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+	const binaryData = osc.writePacket(oscMessage);
+
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[0] === "broadcast") {
+		broadcast(binaryData);			
+	} else {
+		sendMessageToIP(args[0], binaryData);
+	}
+	// }
+});
+
+
+// Handle the Max LED brightness here...
+maxAPI.addHandler("sendBrightness", (...args) => {
+	console.log("send args: " + args);
+	// if (webSocketPort && isConnected) {
+
+	const oscMessage = {
+		address: "/max/led/brightness",
+		args: [
+			{
+				type: "i",
+				value: args[0],
+			},
+			{
+				type: "s",
+				value: args[1]
+			}
+		],
+		
+	}
+
+	// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+	const binaryData = osc.writePacket(oscMessage);
+
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[1] === "broadcast") {
+		broadcast(binaryData);			
+	} else {
+		sendMessageToIP(args[1], binaryData);
+	}
+
+
+	// }
+});
+
+// Handle the Max LED color here...
+maxAPI.addHandler("sendColor", (...args) => {
+	// console.log("send args: " + args);
+	// if (webSocketPort && isConnected) {
+
+		const oscMessage = {
+			address: "/max/led/color",
+			args: [
+				{
+					type: "i",
+					value: args[0],
+				},
+				{
+					type: "i",
+					value: args[1],
+				},
+				{
+					type: "i",
+					value: args[2],
+				},
+				{
+					type: "s",
+					value: args[3]
+				}
 			],
 			
 		}
@@ -366,48 +460,13 @@ wss.on('connection', (ws, req) => {
 		// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
 		const binaryData = osc.writePacket(oscMessage);
 
-		// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-		broadcast(binaryData);
-
-		}
-	});
-
-	// Handle the Max LED color here...
-	maxAPI.addHandler("sendColor", (...args) => {
-		// console.log("send args: " + args);
-		if (webSocketPort && isConnected) {
-
-			const oscMessage = {
-				address: "/max/led/color",
-				args: [
-					{
-						type: "i",
-						value: args[0],
-					},
-					{
-						type: "i",
-						value: args[1],
-					},
-					{
-						type: "i",
-						value: args[2],
-					},
-					{
-						type: "s",
-						value: args[3]
-					}
-				],
-				
-			}
-	
-			// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
-			const binaryData = osc.writePacket(oscMessage);
-	
-			// Broadcast the OSC message (in binary format) to all connected WebSocket clients
-			broadcast(binaryData);
-		}
-
-	});
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[3] === "broadcast") {
+		broadcast(binaryData);			
+	} else {
+		sendMessageToIP(args[3], binaryData);
+	}
+	// }
 
 });
 
