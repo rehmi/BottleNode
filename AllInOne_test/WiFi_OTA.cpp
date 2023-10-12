@@ -57,12 +57,17 @@ void loop_OTA() {
 void loop_WiFi() {
 }
 
+#include "secrets.h"    // defines WIFI_SSID and WIFI_PASSWD
+
 void setup_WiFi() {
   WiFi.mode(WIFI_STA);
 
   WiFiMulti wifiMulti;
-  // wifiMulti.addAP("*******", "   ò_ô   ");
+  wifiMulti.addAP(WIFI_SSID, WIFI_PASSWD);
 
+
+  Serial.print("MAC address: ");
+  Serial.println(WiFi.macAddress());
 
   // Wait for connection
   // while (WiFi.status() != WL_CONNECTED) {
@@ -76,6 +81,8 @@ void setup_WiFi() {
     Serial.println(WiFi.SSID());
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
+    // Serial.print("MAC address: ");
+    // Serial.println(WiFi.macAddress());
   } else {
     const char my_SSID[] = "AllInOne_test";
     const char my_password[] = "secure";

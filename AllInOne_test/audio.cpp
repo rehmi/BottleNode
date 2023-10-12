@@ -61,7 +61,7 @@ void setup_audio(void)
     audio.setPinout(SPKR_BCLK, SPKR_LRC, SPKR_DIN);
 
     // Set thevolume (0-100)
-    audio.setVolume(4);
+    audio.setVolume(8);
 
     audio.setConnectionTimeout(15000, 15000);
 
@@ -76,7 +76,8 @@ void setup_audio(void)
     char URL[] =
         // "http://stream.klassikradio.de/purebach/mp3-128/www.klassikradio.de/";
         // "http://ice1.somafm.com/deepspaceone-64-aac";
-        "http://ice1.somafm.com/cliqhop-128-aac";
+        "http://ice1.somafm.com/dronezone-128-mp3";
+        // "http://ice1.somafm.com/cliqhop-128-aac";
     // "http://38.96.148.28:8342/stream";
 
     //  *** radio streams ***
@@ -112,7 +113,7 @@ void setup_audio(void)
 void loop_audio(void)
 {
     // Set thevolume (0-100)
-    audio.setVolume(min(6, (int)(touchfactor *  12)));
+    // audio.setVolume(min(8, (int)(touchfactor *  12)));
     // Run audio player
     audio.loop();
 }
