@@ -55,7 +55,9 @@ hw/BottleNode/.DS_Store
 .DS_Store
 .Thumbnails
 
+# wifi and other secrets
 secrets.h
+
 AudioI2S_test/debug_custom.json
 AudioI2S_test/debug.cfg
 AudioI2S_test/debug.svd
