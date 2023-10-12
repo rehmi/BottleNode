@@ -126,7 +126,7 @@ void setup_audio(void)
     
     listDir(SPIFFS, "/", 0);
 
-    audio.connecttoFS(SPIFFS, "/default.aac"); // SPIFFS
+//    audio.connecttoFS(SPIFFS, "/default.aac"); // SPIFFS
 
     //  *** radio streams ***
 //    while (!audio.connecttohost(URL));
@@ -163,4 +163,8 @@ void loop_audio(void)
     // audio.setVolume(min(8, (int)(touchfactor *  12)));
     // Run audio player
     audio.loop();
+    if (!audio.isRunning()) {
+      Serial.println("restarting audio loop");
+      audio.connecttoFS(SPIFFS, "/default.aac"); // SPIFFS
+    }
 }
