@@ -81,6 +81,8 @@ void setup_WiFi() {
     Serial.println(WiFi.SSID());
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
+    Serial.print("RSSI: ");
+    Serial.println(WiFi.RSSI());
     // Serial.print("MAC address: ");
     // Serial.println(WiFi.macAddress());
   } else {

@@ -19,6 +19,8 @@ void setup() {
   setup_OSC();
   Serial.println("[Starting internet audio decoder]");
   setup_audio();
+  Serial.println("[Starting WebDAV server]");
+  setup_webdav();
 
   Serial.println("[Startup done.]");
   Serial.println();
@@ -32,4 +34,5 @@ void loop() {
   loop_OTA();
   loop_OSC();
   loop_audio();
+  loop_webdav();
 }
