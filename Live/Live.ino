@@ -7,6 +7,7 @@ void setup() {
 
   Serial.println("[Starting LEDS]");
   setup_LEDS();
+  
   Serial.println("[Starting capacitive sensing]");
   setup_touch();
 
@@ -28,7 +29,9 @@ void setup() {
 
 void loop() {
   loop_touch();
-  // loop_LEDS();
+  if (use_loop == 1) {
+    loop_LEDS();
+  }
   loop_WiFi();
   loop_websocket();
   loop_OTA();

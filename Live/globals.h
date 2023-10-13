@@ -5,6 +5,7 @@
 #include <WiFiUdp.h>
 #include <WebSocketsClient.h>
 #include "Arduino.h"
+#include <stdbool.h>
 
 #include <Audio.h>
 #include <OSCMLite.h>
@@ -40,6 +41,7 @@ extern float touchfactor;
 #define BUFLEN 256
 
 extern float output_attenuation;
+extern int use_loop;
 
 extern void setup_OTA(void);
 extern void setup_WiFi(void);
@@ -71,6 +73,7 @@ extern void setOutputString(char* address, char * out);
 
 // For LEDS 
 extern void LED_ON(), LED_OFF(), LED_toggle();
+extern void LEDS_LOOP(int loop);
 extern void set_LEDS_brightness(uint8_t * brightness);
 extern void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b);
 
@@ -82,6 +85,7 @@ extern void stop_audio(void);
 // For WIFI
 extern void get_ID(char * id);
 extern void parseIpAddress(const char *ip, int output[MAX_SEGMENTS]);
+
 // extern const char * get_IP();
 
 struct GOTMONEY {

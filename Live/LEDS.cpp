@@ -1,5 +1,3 @@
-#include <OSCMLite.h>
-
 #include "globals.h"
 
 #if USE_LiteLED
@@ -92,7 +90,7 @@ void setup_ws2812fx() {
   ws2812fx.init();
   ws2812fx.setBrightness(16);
 
-  //   ws2812fx.setCustomMode(xmas_twinkle);
+  ws2812fx.setCustomMode(xmas_twinkle);
   ws2812fx.setSegment(0, 0, LED_COUNT - 1, FX_MODE_CUSTOM, RED, 300, (uint8_t)(GAMMA));
   uint32_t xcolors[] = { RED, GREEN, WHITE };
   uint32_t *xc = xcolors;
@@ -145,6 +143,9 @@ void setup_LEDS(void) {
 #if USE_WS2812FX
   setup_ws2812fx();
 #endif  // USE_WS2812FX
+
+// Initialize to be running in autonomous mode
+  use_loop = 1;
 }
 
 // Function to convert RGB values to a single unsigned int in hex
@@ -158,14 +159,24 @@ uint32_t rgbToHex(uint8_t r, uint8_t g, uint8_t b) {
     return ((uint32_t)r << 16) | ((uint32_t)g << 8) | (uint32_t)b;
 }
 
+int use_loop;
+void LEDS_LOOP(int use)  {
+  use_loop = use;
+}
+// void LEDS_NOTLOOP()  {
+//   use_led_loop = false;
+// }
+
 void loop_LEDS(void) {
-  uint8_t brightness = min(touchfactor * 255.0, 255.0);
+  uint8_t minV = 100;
+  uint8_t brightness = min(touchfactor * 255.0+minV, 255.0);
+  uint8_t ibrightness = 255-brightness;
 
   //  loop_blink();
   analogWrite(BUILTIN_LED, brightness ^ 0xff);
 
 #if USE_LiteLED
-  LED_chain.brightness(brightness, 1);
+  LED_chain.brightness(ibrightness, 1);
 #endif  // USE_LiteLED
 
 #if USE_WS2812FX
@@ -196,7 +207,7 @@ void set_LEDS_brightness(uint8_t * brightness) {
   analogWrite(BUILTIN_LED, * brightness ^ 0xff);
 
 #if USE_LiteLED
-  LED_chain.brightness(* brightness, 1);
+  LED_chain.brightness(*brightness, 1);
 #endif  // USE_LiteLED
 
 #if USE_WS2812FX

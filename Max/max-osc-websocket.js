@@ -15,8 +15,8 @@ const os = require('os');
 // Get wifi address for local server
 const networkInterfaces = os.networkInterfaces();
 const wifiInterface = networkInterfaces['Wi-Fi'];
-// console.log(networkInterfaces);
-const wifiAddress = wifiInterface[3].address;
+console.log(networkInterfaces);
+const wifiAddress = wifiInterface[1].address;
 
 // Define the ports to be used for the HTTP and Websocket servers
 const PORT_WS = 12345;
@@ -43,7 +43,6 @@ app.listen(PORT_HTTP, () => {
   console.log(`Server started on http://localhost:${PORT_HTTP}`);
 });
 
-
 maxAPI.addHandler("getips", (args) => {
 	console.log(ipAddresses);
     maxAPI.outlet('ids', ipAddresses);
@@ -61,7 +60,6 @@ let webSocketPort;
 let clients = {};
 
 function broadcast(data) {
-	console.log("got here")
 	ipAddresses.forEach(item => sendMessageToIP(item, data));
 
     // wss.clients.forEach((client) => {
@@ -468,6 +466,45 @@ maxAPI.addHandler("sendColor", (...args) => {
 	}
 	// }
 
+});
+
+
+
+// Handle the Max LED brightness here...
+maxAPI.addHandler("sendLedLoop", (...args) => {
+	console.log("send args: " + args);
+	var toLoop = 1; // set tru initially
+	// if (webSocketPort && isConnected) {
+	if (args[0] === "NoLoop")	{
+		toLoop = 0;
+	}	
+	const oscMessage = {
+		address: "/max/led/loop",
+		args: [
+			{
+				type: "i",
+				value: toLoop,
+			},
+			{
+				type: "s",
+				value: args[1]
+			}
+		],
+		
+	}
+
+	// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+	const binaryData = osc.writePacket(oscMessage);
+
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[1] === "broadcast") {
+		broadcast(binaryData);			
+	} else {
+		sendMessageToIP(args[1], binaryData);
+	}
+
+
+	// }
 });
 
 maxAPI.addHandler(maxAPI.MESSAGE_TYPES.ALL, (handled, ...args) => {
