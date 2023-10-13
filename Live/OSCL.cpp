@@ -44,6 +44,9 @@ void led(OSCMessage &msg, int patternOffset) {
         int g =  msg.getInt(1);
         int b =  msg.getInt(2);
         set_LEDS_color(r, g, b);
+  } else if (msg.match("/max/led/loop")) {
+        int toLoop = msg.getInt(0);
+        LEDS_LOOP(toLoop);
   } else {
             Serial.print("No Matching LED Codes! \n");
   }

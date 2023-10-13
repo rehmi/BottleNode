@@ -87,9 +87,15 @@ void setup_WiFi() {
 
   // Wait for connection
   // while (WiFi.status() != WL_CONNECTED) {
+  int max_times = 10;
+  int c_time = 0;
   while (wifiMulti.run() != WL_CONNECTED) {
+      c_time++;
       delay(500);
       Serial.print(".");
+      if (c_time >= max_times)  {
+        break;
+      }
   }
 
   if (wifiMulti.run() == WL_CONNECTED) {

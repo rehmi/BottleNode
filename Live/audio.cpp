@@ -1,8 +1,44 @@
 #include "globals.h"
-
+#include "FS.h"
+#include "SPIFFS.h"
 // Audio status functions
 // Create audio object
 Audio audio;
+int fact = 50;
+int dVal = 8*fact;
+int toFade = 0;
+
+
+void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
+    Serial.printf("Listing directory: %s\r\n", dirname);
+
+    File root = fs.open(dirname);
+    if(!root){
+        Serial.println("- failed to open directory");
+        return;
+    }
+    if(!root.isDirectory()){
+        Serial.println(" - not a directory");
+        return;
+    }
+
+    File file = root.openNextFile();
+    while(file){
+        if(file.isDirectory()){
+            Serial.print("  DIR : ");
+            Serial.println(file.name());
+            if(levels){
+                listDir(fs, file.path(), levels -1);
+            }
+        } else {
+            Serial.print("  FILE: ");
+            Serial.print(file.name());
+            Serial.print("\tSIZE: ");
+            Serial.println(file.size());
+        }
+        file = root.openNextFile();
+    }
+}
 
 void audio_info(const char *info) {
     Serial.print("info        ");
@@ -51,6 +87,7 @@ void audio_eof_speech(const char *info) {
 
 void set_audio_url(char * in, int len) {
   char url[len];
+  toFade = 0;
   Serial.println("Connecting to host: ");
   for(int i = 0; i < len; i++) {
         url[i]=in[i];
@@ -62,8 +99,23 @@ void set_audio_volume(uint8_t * in) {
     audio.setVolume(*in);
 }
 
+int fade_out() {
+  toFade = 1;
+  int off = 0;
+  int vol = audio.getVolume();
+  float div = (float)dVal/(float)fact;
+  audio.setVolume((int)div);
+  dVal--;
+  if (vol <= 0) {
+    off = 1;
+  } 
+  return off;
+}
+
 void stop_audio(void) {
     if (audio.isRunning())  {
+      // fade_out();
+      toFade = 1;
       audio.stopSong();
     }
 }
@@ -79,7 +131,7 @@ void setup_audio(void)
     audio.setPinout(SPKR_BCLK, SPKR_LRC, SPKR_DIN);
 
     // Set thevolume (0-100)
-    audio.setVolume(4);
+    audio.setVolume(8);
 
     audio.setConnectionTimeout(15000, 15000);
 
@@ -94,8 +146,20 @@ void setup_audio(void)
     char URL[] =
         // "http://stream.klassikradio.de/purebach/mp3-128/www.klassikradio.de/";
         // "http://ice1.somafm.com/deepspaceone-64-aac";
-        "http://ice1.somafm.com/dronezone-128-mp3";
+        // "http://ice1.somafm.com/dronezone-128-mp3";
+        "https://ice4.somafm.com/dronezone-32-aac";
     // "http://38.96.148.28:8342/stream";
+        audio.connecttohost(URL);
+
+    #define FORMAT_SPIFFS_IF_FAILED true
+
+    if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)){
+        Serial.println("SPIFFS Mount Failed");
+        return;
+    }
+    
+    listDir(SPIFFS, "/", 0);
+
 
     //  *** radio streams ***
     // while (!audio.connecttohost(URL))
@@ -128,10 +192,28 @@ void setup_audio(void)
 }
 
 void loop_audio(void)
-{
+{   
     // Set thevolume (0-100)
     // audio.setVolume(min(6, (int)(touchfactor *  12)));
 
-    // Run audio player
     audio.loop();
+    if (!audio.isRunning()) {
+      Serial.println("restarting audio loop");
+      audio.connecttoFS(SPIFFS, "/default.aac"); // SPIFFS
+    }
+
+    // Run audio player
+    // if (toFade == 0)  {
+    //   audio.loop();
+    // }
+
+    // Check if need to fade off 
+    // if (toFade == 1)  {
+    //   int off = fade_out();
+    //   if (off == 1 )  {
+    //     toFade = 0;
+    //     dVal = 8*fact;
+    //     audio.stopSong();
+    //   }
+    // }
 }
