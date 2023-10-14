@@ -16,6 +16,7 @@ static const crgb_t L_RED = 0xff0000;
 static const crgb_t L_GREEN = 0x00ff00;
 static const crgb_t L_BLUE = 0x0000ff;
 static const crgb_t L_WHITE = 0xe0e0e0;
+static const crgb_t L_PINK = 0xff00ff;
 
 LiteLED LED_chain(LED_TYPE, LED_TYPE_IS_RGBW);
 #endif  // USE_LiteLED
@@ -135,7 +136,7 @@ void setup_LEDS(void) {
     if (i == LED_COUNT-1) {
       LED_chain.setPixel(i, 0x80c0c0, 1);  // update (show) the chain
     } else  {
-      LED_chain.setPixel(i, L_BLUE, 0);  // set initial colors
+      LED_chain.setPixel(i, L_PINK, 0);  // set initial colors
     }
   }
 #endif                                 // USE_LiteLED
@@ -176,7 +177,7 @@ void loop_LEDS(void) {
   analogWrite(BUILTIN_LED, brightness ^ 0xff);
 
 #if USE_LiteLED
-  LED_chain.brightness(ibrightness, 1);
+  LED_chain.brightness(brightness, 1);
 #endif  // USE_LiteLED
 
 #if USE_WS2812FX

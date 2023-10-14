@@ -261,9 +261,9 @@ maxAPI.addHandler("getIdentifier", (...args) => {
 
 });
 
-
 // Handle the Max audio URL here...
 maxAPI.addHandler("sendAudioUrl", (...args) => {
+	console.log("URL:");
 	// http://localhost:${PORT_HTTP}/music/${args[0]}
 	// console.log("WIFI:");
 	console.log("Inside sendAudioUrl");
@@ -296,6 +296,41 @@ maxAPI.addHandler("sendAudioUrl", (...args) => {
 	}		
 	// }
 });
+
+// Handle the Max audio URL here...
+maxAPI.addHandler("sendAudioFS", (...args) => {
+	// http://localhost:${PORT_HTTP}/music/${args[0]}
+	console.log("FS:");
+	// if (webSocketPort && isConnected) {
+
+		const oscMessage ={
+			address: "/max/audio/fs",
+			args: [
+				{
+					type: "s",
+					value: args[0],
+				},
+				{
+					type: "s",
+					value: args[1]
+				}
+			],
+			
+		};
+		
+		// Convert the OSC message to a Buffer or ArrayBuffer (binary format)
+		console.log("Right before write packet sendAudioUrl");
+		const binaryData = osc.writePacket(oscMessage);
+	
+	// Broadcast the OSC message (in binary format) to all connected WebSocket clients
+	if (args[1] === "broadcast") {
+		broadcast(binaryData);			
+	} else {
+		sendMessageToIP(args[1], binaryData);
+	}		
+	// }
+});
+
 
 // Handle the Max audio URL here...
 maxAPI.addHandler("sendAudioHttp", (...args) => {
@@ -429,6 +464,8 @@ maxAPI.addHandler("sendBrightness", (...args) => {
 
 // Handle the Max LED color here...
 maxAPI.addHandler("sendColor", (...args) => {
+	console.log("Colors:");
+
 	// console.log("send args: " + args);
 	// if (webSocketPort && isConnected) {
 
