@@ -51,6 +51,7 @@ extern void setup_I2S(void);
 extern void setup_LEDS(void);
 extern void setup_touch(void);
 extern void setup_audio(void);
+extern void setup_webdav(void);
 
 extern void loop_OTA(void);
 extern void loop_WiFi(void);
@@ -60,6 +61,7 @@ extern void loop_I2S(void);
 extern void loop_LEDS(void);
 extern void loop_touch(void);
 extern void loop_audio(void);
+extern void loop_webdav(void);
 
 // For Touch 
 extern void send_touch(void);
@@ -81,6 +83,7 @@ extern void set_LEDS_color(uint8_t r, uint8_t g, uint8_t b);
 extern void set_audio_url(char * url, int len);
 extern void set_audio_volume(uint8_t * in);
 extern void stop_audio(void);
+extern void set_audio_fs(char * in, int len);
 
 // For WIFI
 extern void get_ID(char * id);

@@ -7,7 +7,12 @@ Audio audio;
 int fact = 50;
 int dVal = 8*fact;
 int toFade = 0;
-
+int toLoop = 0;
+char tFS[256];
+char tFSC[256]="/C.mp3";
+char tFSE[256]="/E.mp3";
+char tFSG[256]="/G.mp3";
+char tFSUse[256];
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     Serial.printf("Listing directory: %s\r\n", dirname);
@@ -38,6 +43,20 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
         }
         file = root.openNextFile();
     }
+}
+
+bool check_if_file_exists(fs::FS &fs, const char *fName)  {
+  bool exists = false;
+  Serial.printf("Checking file exists: %s\r\n", fName);
+
+    File file = fs.open(fName);
+    if(!file){
+        Serial.println("- failed to find file");
+    } else{
+      exists = true;
+    }
+    file.close();
+    return exists;
 }
 
 void audio_info(const char *info) {
@@ -95,6 +114,21 @@ void set_audio_url(char * in, int len) {
   audio.connecttohost(url);
 }
 
+void set_audio_fs(char * in, int len) {
+  char url[len];
+  toFade = 0;
+  toLoop = 1;
+  Serial.println("Connecting to host: ");
+  for(int i = 0; i < len; i++) {
+        url[i]=in[i];
+    }
+  strcpy(tFSUse, url);
+  audio.connecttoFS(SPIFFS, tFSUse); // SPIFFS
+
+  Serial.println("Playing FS: ");
+  Serial.println(tFSUse);
+}
+
 void set_audio_volume(uint8_t * in) {
     audio.setVolume(*in);
 }
@@ -116,12 +150,14 @@ void stop_audio(void) {
     if (audio.isRunning())  {
       // fade_out();
       toFade = 1;
+      toLoop = 0;
       audio.stopSong();
     }
 }
 
 void setup_audio(void)
 {
+    strcpy(tFSUse, tFSC);
     digitalWrite(SPKR_POWER, 0);
     gpio_set_drive_capability(SPKR_POWER, GPIO_DRIVE_CAP_3);
     pinMode(SPKR_POWER, OUTPUT);
@@ -131,7 +167,7 @@ void setup_audio(void)
     audio.setPinout(SPKR_BCLK, SPKR_LRC, SPKR_DIN);
 
     // Set thevolume (0-100)
-    audio.setVolume(8);
+    audio.setVolume(18);
 
     audio.setConnectionTimeout(15000, 15000);
 
@@ -160,6 +196,18 @@ void setup_audio(void)
     
     listDir(SPIFFS, "/", 0);
 
+    // Check if file exists 
+    if(!check_if_file_exists(SPIFFS, tFSUse))  {
+        strcpy(tFSUse, tFSE);
+        audio.setVolume(15);
+      if (!check_if_file_exists(SPIFFS, tFSE))  {
+        strcpy(tFSUse, tFSG);
+        audio.setVolume(15);
+      }
+      if (!check_if_file_exists(SPIFFS, tFSG))  {
+        audio.setVolume(8);
+      }
+    }
 
     //  *** radio streams ***
     // while (!audio.connecttohost(URL))
@@ -189,17 +237,34 @@ void setup_audio(void)
     //  audio.connecttoFS(SPIFFS, "/test.wav"); // SPIFFS
 
     //  audio.connecttospeech("Wenn die Hunde schlafen, kann der Wolf gut Schafe stehlen.", "de"); // Google TTS
+
+
 }
 
 void loop_audio(void)
 {   
     // Set thevolume (0-100)
     // audio.setVolume(min(6, (int)(touchfactor *  12)));
-
     audio.loop();
+
+    if (touchfactor > 0.75)  {
+      if(check_if_file_exists(SPIFFS, tFSUse))  {
+        audio.connecttoFS(SPIFFS, tFSUse); // SPIFFS 
+      } else  {
+        audio.connecttospeech("Hello there!", "en"); // Google TTS
+      }
+    }
+
+    if(toLoop == 1){
+      Serial.println("restarting audio loop FS");
+      if (!audio.isRunning()) {
+      audio.connecttoFS(SPIFFS, tFSUse); // SPIFFS 
+      }
+    }
+
+    // Ensure there is always music
     if (!audio.isRunning()) {
-      Serial.println("restarting audio loop");
-      audio.connecttoFS(SPIFFS, "/default.aac"); // SPIFFS
+      audio.connecttoFS(SPIFFS, "default.aac"); // SPIFFS 
     }
 
     // Run audio player

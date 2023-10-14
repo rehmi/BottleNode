@@ -23,6 +23,9 @@ void setup() {
   Serial.println("[Starting internet audio decoder]");
   setup_audio();
 
+  Serial.println("[Starting webdav. ]");
+  setup_webdav();
+
   Serial.println("[Startup done.]");
   Serial.println();
 }
@@ -36,4 +39,5 @@ void loop() {
   loop_websocket();
   loop_OTA();
   loop_audio();
+  loop_webdav();
 }
